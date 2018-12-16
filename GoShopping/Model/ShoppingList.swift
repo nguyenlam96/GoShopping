@@ -28,7 +28,15 @@ class ShoppingList {
     
     
     // create item from dictionary values
-    init(dictionary: NSDictionary) {
+//    init(dictionary: NSDictionary) {
+//        name = dictionary[kNAME] as! String
+//        totalPrice = dictionary[kTOTALPRICE] as! Float
+//        totalItems = dictionary[kTOTALITEMS] as! Int
+//        id = dictionary[kSHOPPINGLISTID] as! String
+//        date = getCustomDateFormatter().date(from: dictionary[kDATE] as! String)!
+//        ownerId = dictionary[kOWNERID] as! String
+//    }
+    init(dictionary: [String:Any] ) {
         name = dictionary[kNAME] as! String
         totalPrice = dictionary[kTOTALPRICE] as! Float
         totalItems = dictionary[kTOTALITEMS] as! Int
@@ -37,15 +45,16 @@ class ShoppingList {
         ownerId = dictionary[kOWNERID] as! String
     }
     // create dictionary from item values
-    func dictionaryFromItem(item: ShoppingList) -> NSDictionary {
+    func dictionaryFromItem(item: ShoppingList) -> [String:Any] {
         
         let date = getCustomDateFormatter().string(from: item.date) // get dateString
         
-        let objects = [item.name, item.totalPrice, item.totalItems, item.id, date, item.ownerId ] as [Any]
+       // let objects = [item.name, item.totalPrice, item.totalItems, item.id, date, item.ownerId ] as [Any]
 //        let keys = [kNAME as NSCopying, kTOTALPRICE as NSCopying, totalItems as NSCopying, kSHOPPINGLISTID as NSCopying, kDATE as NSCopying, kOWNERID as NSCopying]
-        let keys = [kNAME , kTOTALPRICE  , kTOTALITEMS  , kSHOPPINGLISTID  , kDATE  , kOWNERID  ]
+        //let keys = [kNAME , kTOTALPRICE  , kTOTALITEMS  , kSHOPPINGLISTID  , kDATE  , kOWNERID  ]
         
-        return NSDictionary(object: objects, forKey: keys as NSCopying)
+        let dict = [kNAME: item.name, kTOTALPRICE: item.totalPrice, kSHOPPINGITEM: item.totalItems, kSHOPPINGLISTID: item.id, kDATE: date, kOWNERID: item.ownerId] as [String : Any]
+        return dict
     }
     
     func saveItemInBackground(shoppingList: ShoppingList, completion: @escaping (_ error: Error?) -> Void ) {
