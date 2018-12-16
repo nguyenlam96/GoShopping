@@ -26,16 +26,15 @@ class ShoppingList {
         ownerId = "1234"
     }
     
-    
-    // create item from dictionary values
-//    init(dictionary: NSDictionary) {
-//        name = dictionary[kNAME] as! String
-//        totalPrice = dictionary[kTOTALPRICE] as! Float
-//        totalItems = dictionary[kTOTALITEMS] as! Int
-//        id = dictionary[kSHOPPINGLISTID] as! String
-//        date = getCustomDateFormatter().date(from: dictionary[kDATE] as! String)!
-//        ownerId = dictionary[kOWNERID] as! String
-//    }
+    init(_name: String, _totalPrice: Float = 0, _totalItems: Int, _id: String = "", _date: Date, _ownerId: String) {
+        name = _name
+        totalPrice = _totalPrice
+        totalItems = _totalItems
+        id = _id
+        date = _date
+        ownerId = _ownerId
+    }
+
     init(dictionary: [String:Any] ) {
         name = dictionary[kNAME] as! String
         totalPrice = dictionary[kTOTALPRICE] as! Float
@@ -49,11 +48,8 @@ class ShoppingList {
         
         let date = getCustomDateFormatter().string(from: item.date) // get dateString
         
-       // let objects = [item.name, item.totalPrice, item.totalItems, item.id, date, item.ownerId ] as [Any]
-//        let keys = [kNAME as NSCopying, kTOTALPRICE as NSCopying, totalItems as NSCopying, kSHOPPINGLISTID as NSCopying, kDATE as NSCopying, kOWNERID as NSCopying]
-        //let keys = [kNAME , kTOTALPRICE  , kTOTALITEMS  , kSHOPPINGLISTID  , kDATE  , kOWNERID  ]
         
-        let dict = [kNAME: item.name, kTOTALPRICE: item.totalPrice, kSHOPPINGITEM: item.totalItems, kSHOPPINGLISTID: item.id, kDATE: date, kOWNERID: item.ownerId] as [String : Any]
+        let dict = [kNAME: item.name, kTOTALPRICE: item.totalPrice, kTOTALITEMS: item.totalItems, kSHOPPINGLISTID: item.id, kDATE: date, kOWNERID: item.ownerId] as [String : Any]
         return dict
     }
     

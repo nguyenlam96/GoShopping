@@ -8,24 +8,24 @@
 
 import UIKit
 import KRProgressHUD
+import Firebase
 
 class AllListsViewController: UIViewController {
     
     // MARK: - Properties
     
     var allLists: [ShoppingList] = []
-    var shoppingListNameTextField: UITextField!
+    var listNameTextField: UITextField!
     
     // MARK: - IBOutlet
 
     @IBOutlet weak var tableView: UITableView!
     
-    
+    // MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setup()
-        
+        loadList()
     }
     
     // MARK: - Setup
@@ -41,7 +41,7 @@ class AllListsViewController: UIViewController {
         
         ac.addTextField { (nameTextField) in
             nameTextField.placeholder = "Enter name"
-            self.shoppingListNameTextField = nameTextField
+            self.listNameTextField = nameTextField
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
@@ -49,9 +49,10 @@ class AllListsViewController: UIViewController {
         }
         
         let saveAction = UIAlertAction(title: "Save", style: .default) { [unowned self](action) in
-            if self.shoppingListNameTextField.text != "" {
+            if self.listNameTextField.text != "" {
                 // save
                 self.createShoppingList()
+                KRProgressHUD.showSuccess(withMessage: "\(self.listNameTextField.text!) created !")
             } else {
                 KRProgressHUD.showWarning(withMessage: "Name can't be empty!")
             }
@@ -64,10 +65,49 @@ class AllListsViewController: UIViewController {
         
     }
     
+    // MARK: - Load Item
+    
+    func loadList() {
+        
+//        firebaseRootRef.child(kSHOPPINGLIST).child("1234").observe(.value) { [unowned self] (snapshot) in
+//
+//        }
+        firebaseRootRef.child(kSHOPPINGLIST).child("1234").observeSingleEvent(of: .value) { (snapshot) in
+            
+            self.allLists.removeAll()
+            
+            if snapshot.exists() {
+                let sorted = ((snapshot.value as! NSDictionary).allValues as NSArray).sortedArray(using: [NSSortDescriptor(key: kDATE, ascending: false)])
+
+                for list in sorted {
+                    let currentList = list as! [String:Any]
+                    guard let name = currentList[kNAME] as? String,
+                          let totalPrice = currentList[kTOTALPRICE] as? Float,
+                          let totalItems = currentList[kTOTALITEMS] as? Int,
+                          let id = currentList[kSHOPPINGLISTID] as? String,
+                          let date  = getCustomDateFormatter().date(from: currentList[kDATE] as! String),
+                          let ownerId = currentList[kOWNERID] as? String
+                    else {
+                        continue
+                    }
+                    print("Items info: ")
+                    print("\(name) - \(totalPrice) - \(totalItems) - \(id) - \(date) - \(ownerId)")
+                    let list = ShoppingList(_name: name, _totalPrice: totalPrice, _totalItems: totalItems, _id: id, _date: date, _ownerId: ownerId)
+                    self.allLists.append(ShoppingList(dictionary: currentList))
+                }
+                print("Number of item loaded: \(self.allLists.count)")
+                self.tableView.reloadData()
+            } else {
+                print("Snapshot doesn't exist")
+            }
+        }
+        
+    }
+    
     // MARK: - Helper Functions
     func createShoppingList() {
         
-        let shoppingList = ShoppingList(_name: shoppingListNameTextField.text!)
+        let shoppingList = ShoppingList(_name: listNameTextField.text!)
         
         shoppingList.saveItemInBackground(shoppingList: shoppingList) { (error) in
             if error != nil {
@@ -83,11 +123,16 @@ class AllListsViewController: UIViewController {
 extension AllListsViewController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - TableView Datasource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return allLists.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "ShoppingListCell", for: indexPath)
+        
+        let theItem = allLists[indexPath.row]
+        cell.textLabel?.text = theItem.name
+         
         return cell
     }
     // MARK: - TableView Delegate Methods
