@@ -17,31 +17,31 @@ class ShoppingList {
     var date: Date
     var ownerId: String
     
-    init(_name: String, _totalPrice: Float = 0, _id: String = "") {
-        name = _name
-        totalPrice = _totalPrice
-        totalItems = 0
-        id = _id
-        date = Date()
-        ownerId = "1234"
+    init(name: String, totalPrice: Float = 0, id: String = "") {
+        self.name = name
+        self.totalPrice = totalPrice
+        self.totalItems = 0
+        self.id = id
+        self.date = Date()
+        self.ownerId = "1234"
     }
     
-    init(_name: String, _totalPrice: Float = 0, _totalItems: Int, _id: String = "", _date: Date, _ownerId: String) {
-        name = _name
-        totalPrice = _totalPrice
-        totalItems = _totalItems
-        id = _id
-        date = _date
-        ownerId = _ownerId
+    init(name: String, totalPrice: Float = 0, totalItems: Int, id: String = "", date: Date, ownerId: String) {
+        self.name = name
+        self.totalPrice = totalPrice
+        self.totalItems = totalItems
+        self.id = id
+        self.date = date
+        self.ownerId = ownerId
     }
 
     init(dictionary: [String:Any] ) {
-        name = dictionary[kNAME] as! String
-        totalPrice = dictionary[kTOTALPRICE] as! Float
-        totalItems = dictionary[kTOTALITEMS] as! Int
-        id = dictionary[kSHOPPINGLISTID] as! String
-        date = getCustomDateFormatter().date(from: dictionary[kDATE] as! String)!
-        ownerId = dictionary[kOWNERID] as! String
+        self.name = dictionary[kNAME] as! String
+        self.totalPrice = dictionary[kTOTALPRICE] as! Float
+        self.totalItems = dictionary[kTOTALITEMS] as! Int
+        self.id = dictionary[kSHOPPINGLISTID] as! String
+        self.date = getCustomDateFormatter().date(from: dictionary[kDATE] as! String)!
+        self.ownerId = dictionary[kOWNERID] as! String
     }
     // create dictionary from item values
     func dictionaryFromItem(item: ShoppingList) -> [String:Any] {
@@ -64,8 +64,6 @@ class ShoppingList {
             completion(error)
 
         }
-
-        
     }
     
     func deleteItemBackground(shoppingList: ShoppingList) {

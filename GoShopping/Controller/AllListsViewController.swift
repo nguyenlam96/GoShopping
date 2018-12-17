@@ -32,6 +32,8 @@ class AllListsViewController: UIViewController {
     func setup() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
+        title = "Shopping Lists"
     }
     
     // MARK: - IBAction
@@ -53,6 +55,7 @@ class AllListsViewController: UIViewController {
                 // save
                 self.createShoppingList()
                 KRProgressHUD.showSuccess(withMessage: "\(self.listNameTextField.text!) created !")
+                //self.tableView.reloadData()
             } else {
                 KRProgressHUD.showWarning(withMessage: "Name can't be empty!")
             }
@@ -69,9 +72,6 @@ class AllListsViewController: UIViewController {
     
     func loadList() {
         
-//        firebaseRootRef.child(kSHOPPINGLIST).child("1234").observe(.value) { [unowned self] (snapshot) in
-//
-//        }
         firebaseRootRef.child(kSHOPPINGLIST).child("1234").observeSingleEvent(of: .value) { (snapshot) in
             
             self.allLists.removeAll()
@@ -79,23 +79,15 @@ class AllListsViewController: UIViewController {
             if snapshot.exists() {
                 let sorted = ((snapshot.value as! NSDictionary).allValues as NSArray).sortedArray(using: [NSSortDescriptor(key: kDATE, ascending: false)])
 
-                for list in sorted {
-                    let currentList = list as! [String:Any]
-                    guard let name = currentList[kNAME] as? String,
-                          let totalPrice = currentList[kTOTALPRICE] as? Float,
-                          let totalItems = currentList[kTOTALITEMS] as? Int,
-                          let id = currentList[kSHOPPINGLISTID] as? String,
-                          let date  = getCustomDateFormatter().date(from: currentList[kDATE] as! String),
-                          let ownerId = currentList[kOWNERID] as? String
-                    else {
+                for each in sorted {
+                    let list = each as! [String:Any]
+                    if self.isDataComeBackValid(shoppingListDictionary: list) {
+                        self.allLists.append(ShoppingList(dictionary: list))
+                    } else {
                         continue
                     }
-                    print("Items info: ")
-                    print("\(name) - \(totalPrice) - \(totalItems) - \(id) - \(date) - \(ownerId)")
-                    let list = ShoppingList(_name: name, _totalPrice: totalPrice, _totalItems: totalItems, _id: id, _date: date, _ownerId: ownerId)
-                    self.allLists.append(ShoppingList(dictionary: currentList))
                 }
-                print("Number of item loaded: \(self.allLists.count)")
+                print("Number of list loaded: \(self.allLists.count)")
                 self.tableView.reloadData()
             } else {
                 print("Snapshot doesn't exist")
@@ -107,17 +99,42 @@ class AllListsViewController: UIViewController {
     // MARK: - Helper Functions
     func createShoppingList() {
         
-        let shoppingList = ShoppingList(_name: listNameTextField.text!)
+        let shoppingList = ShoppingList(name: listNameTextField.text!)
         
-        shoppingList.saveItemInBackground(shoppingList: shoppingList) { (error) in
+        shoppingList.saveItemInBackground(shoppingList: shoppingList) { [unowned self] (error) in
             if error != nil {
                 KRProgressHUD.showError(withMessage: "Error creating shop list")
                 return
             }
+            self.allLists.append(shoppingList)
         }
         
     }
    
+    func isDataComeBackValid(shoppingListDictionary: [String:Any]) -> Bool {
+        guard let _ = shoppingListDictionary[kNAME] as? String,
+            let _ = shoppingListDictionary[kTOTALPRICE] as? Float,
+            let _ = shoppingListDictionary[kTOTALITEMS] as? Int,
+            let _ = shoppingListDictionary[kSHOPPINGLISTID] as? String,
+            let _  = getCustomDateFormatter().date(from: shoppingListDictionary[kDATE] as! String),
+            let _ = shoppingListDictionary[kOWNERID] as? String
+            else {
+                return false
+            }
+        return true
+    }
+    
+    // MARK: Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let identifier = segue.identifier , identifier == "ListToItemSegue" {
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                let shoppingList = allLists[selectedIndexPath.row]
+                let desVC = segue.destination as! ShopingItemsViewController
+                desVC.theShoppingList = shoppingList
+            }
+        }
+    }
+
 
 }
 extension AllListsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -128,13 +145,18 @@ extension AllListsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ShoppingListCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ShoppingListCell", for: indexPath) as! ListTableViewCell
         
         let theItem = allLists[indexPath.row]
-        cell.textLabel?.text = theItem.name
+        cell.bindData(item: theItem)
          
         return cell
     }
     // MARK: - TableView Delegate Methods
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }

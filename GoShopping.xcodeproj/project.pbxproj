@@ -17,6 +17,11 @@
 		0525469121C51F6800A533F1 /* ShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0525469021C51F6800A533F1 /* ShoppingList.swift */; };
 		0525469421C520BE00A533F1 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0525469321C520BE00A533F1 /* Constant.swift */; };
 		0525469721C521E700A533F1 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0525469621C521E700A533F1 /* Utilities.swift */; };
+		0525469921C6E2B600A533F1 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0525469821C6E2B600A533F1 /* ListTableViewCell.swift */; };
+		0525469B21C6EC1000A533F1 /* ShoppingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0525469A21C6EC1000A533F1 /* ShoppingItem.swift */; };
+		0525469D21C7EE6400A533F1 /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0525469C21C7EE6400A533F1 /* AddItemViewController.swift */; };
+		0525469F21C8049A00A533F1 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0525469E21C8049A00A533F1 /* ItemTableViewCell.swift */; };
+		0525AD6321C822400016E1A0 /* SwipeCellActionEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0525AD6221C822400016E1A0 /* SwipeCellActionEnum.swift */; };
 		F43BEEBA4F88EC520763DB5C /* Pods_GoShopping.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C108D6FF5ECF501EB27E9B6 /* Pods_GoShopping.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +38,11 @@
 		0525469021C51F6800A533F1 /* ShoppingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingList.swift; sourceTree = "<group>"; };
 		0525469321C520BE00A533F1 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		0525469621C521E700A533F1 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		0525469821C6E2B600A533F1 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		0525469A21C6EC1000A533F1 /* ShoppingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingItem.swift; sourceTree = "<group>"; };
+		0525469C21C7EE6400A533F1 /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
+		0525469E21C8049A00A533F1 /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
+		0525AD6221C822400016E1A0 /* SwipeCellActionEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCellActionEnum.swift; sourceTree = "<group>"; };
 		1C108D6FF5ECF501EB27E9B6 /* Pods_GoShopping.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoShopping.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B80BFB60D8E5280016AB3A1C /* Pods-GoShopping.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoShopping.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GoShopping/Pods-GoShopping.debug.xcconfig"; sourceTree = "<group>"; };
 		D908C077F6A5B5A062584127 /* Pods-GoShopping.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoShopping.release.xcconfig"; path = "Pods/Target Support Files/Pods-GoShopping/Pods-GoShopping.release.xcconfig"; sourceTree = "<group>"; };
@@ -89,6 +99,7 @@
 			children = (
 				0525468A21C514F200A533F1 /* AllListsViewController.swift */,
 				0525468C21C5151600A533F1 /* ShopingItemsViewController.swift */,
+				0525469C21C7EE6400A533F1 /* AddItemViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -106,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				0525469021C51F6800A533F1 /* ShoppingList.swift */,
+				0525469A21C6EC1000A533F1 /* ShoppingItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -113,6 +125,8 @@
 		0525469221C51F8400A533F1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0525469821C6E2B600A533F1 /* ListTableViewCell.swift */,
+				0525469E21C8049A00A533F1 /* ItemTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -122,6 +136,7 @@
 			children = (
 				0525469321C520BE00A533F1 /* Constant.swift */,
 				0525469621C521E700A533F1 /* Utilities.swift */,
+				0525AD6221C822400016E1A0 /* SwipeCellActionEnum.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -276,9 +291,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0525469921C6E2B600A533F1 /* ListTableViewCell.swift in Sources */,
+				0525AD6321C822400016E1A0 /* SwipeCellActionEnum.swift in Sources */,
 				0525469721C521E700A533F1 /* Utilities.swift in Sources */,
+				0525469F21C8049A00A533F1 /* ItemTableViewCell.swift in Sources */,
 				0525468B21C514F200A533F1 /* AllListsViewController.swift in Sources */,
 				0525469121C51F6800A533F1 /* ShoppingList.swift in Sources */,
+				0525469B21C6EC1000A533F1 /* ShoppingItem.swift in Sources */,
+				0525469D21C7EE6400A533F1 /* AddItemViewController.swift in Sources */,
 				0525469421C520BE00A533F1 /* Constant.swift in Sources */,
 				0525467621C5057200A533F1 /* AppDelegate.swift in Sources */,
 				0525468D21C5151600A533F1 /* ShopingItemsViewController.swift in Sources */,
