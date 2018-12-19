@@ -148,6 +148,9 @@ extension ShopingItemsViewController: UITableViewDelegate, UITableViewDataSource
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemTableViewCell
         
+        cell.delegate = self
+        cell.selectedBackgroundView = getSelectedBackgroundView()
+        
         var item: ShoppingItem!
         if indexPath.section == 0 {
             item = shoppingItems[indexPath.row]
@@ -189,7 +192,80 @@ extension ShopingItemsViewController: UITableViewDelegate, UITableViewDataSource
 extension ShopingItemsViewController: SwipeTableViewCellDelegate {
     // MARK: - SwipeTableViewCell Delegate
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        <#code#>
+        
+        var item: ShoppingItem!
+        if indexPath.section == 0 {
+            item = shoppingItems[indexPath.row]
+        } else {
+            item = boughtItems[indexPath.row]
+        }
+        
+        if orientation == .left { // swipe to the right --> buy
+            guard isSwipeRightEnable else {
+                return nil
+            }
+            let buyAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
+                // update DB
+                item.isBought = !item.isBought
+                item.updateItemInBackground(shoppingItem: item, completion: { (error) in
+                    if error != nil {
+                        KRProgressHUD.showError(withMessage: "Error update item")
+                        return
+                    } else {
+                        KRProgressHUD.showSuccess(withMessage: "Success buy item")
+                        return
+                    }
+                })
+                // move item to another section
+                if indexPath.section == 0 {
+                    self.shoppingItems.remove(at: indexPath.row)
+                    self.boughtItems.append(item)
+                } else {
+                    self.boughtItems.remove(at: indexPath.row)
+                    self.shoppingItems.append(item)
+                }
+                tableView.reloadData()
+            }
+            buyAction.accessibilityLabel = item.isBought ? "Buy" : "Return"
+            let description: ActionDescription = item.isBought ? .returnPurchase : .buy
+            configure(action: buyAction, with: description)
+            return [buyAction]
+        } else { // swipe to the left --> delete
+            let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
+                // update DB
+                item.deleteItemBackground(shoppingItem: item)
+                // move item to another section
+                if indexPath.section == 0 {
+                    self.shoppingItems.remove(at: indexPath.row)
+                } else {
+                    self.boughtItems.remove(at: indexPath.row)
+                }
+                //item.deleteItemBackground(shoppingItem: item)
+                
+                self.tableView.beginUpdates()
+                action.fulfill(with: .delete)
+                self.tableView.endUpdates()
+            }
+            configure(action: deleteAction, with: .trash)
+            return [deleteAction]
+        }
+    }
+    
+    func configure(action: SwipeAction, with description: ActionDescription) {
+        action.title = description.title
+        action.image = description.image
+        action.backgroundColor = description.color
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        
+        var options = SwipeTableOptions()
+        options.expansionStyle = (orientation == .left) ? .selection : .destructive
+        options.transitionStyle = defaultOptions.transitionStyle
+        options.buttonSpacing = 11
+        
+        return options
+        
     }
 
 }
