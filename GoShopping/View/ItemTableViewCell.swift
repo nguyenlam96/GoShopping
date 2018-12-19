@@ -29,18 +29,23 @@ class ItemTableViewCell: SwipeTableViewCell {
     
     func bindData(item: ShoppingItem) {
         
-        let price = String(format: "%.2f", priceLabel.text!)
-        
         nameLabel.text = item.name
         infoLabel.text = item.info
-        priceLabel.text = "$\(price)"
+        let priceString = String(format: "%.2f", item.price)
+        priceLabel.text = priceString
         quantityLabel.text = "quantity: \(item.quantity)"
         
         infoLabel.sizeToFit()
         priceLabel.sizeToFit()
         quantityLabel.sizeToFit()
         
-        
+        if item.image != "" { // having image
+            getImageFrom(stringData: item.image) { (image) in
+                self.itemImageView.image = image
+            }
+        } else {
+            self.itemImageView.image = UIImage(named: "ShoppingCartEmpty")
+        }
         
     }
 

@@ -33,13 +33,15 @@ class ListTableViewCell: UITableViewCell {
         
         let currentDateFormatter = DateFormatter()
         currentDateFormatter.dateFormat = "dd/MM/yyyy"
-        let dateString = currentDateFormatter.string(from: item.date)
         
-        let totalPriceString = String(format: "%.2f", item.totalPrice)
+        
+        
         
         nameLabel.text = "\(item.name)"
         totalItemsLabel.text = "\(item.totalItems)"
-        totalPriceLabel.text = "Total $\(totalPriceString)"
+        let totalPriceString = String(format: "%.2f", item.totalPrice)
+        totalPriceLabel.text = "Total $" + totalPriceString
+        let dateString = currentDateFormatter.string(from: item.date)
         dateLabel.text = dateString
         
         totalPriceLabel.sizeToFit()

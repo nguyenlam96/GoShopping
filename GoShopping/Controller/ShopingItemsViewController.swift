@@ -18,6 +18,7 @@ class ShopingItemsViewController: UIViewController {
     var boughtItems: [ShoppingItem] = []
     var defaultOptions = SwipeTableOptions()
     var isSwipeRightEnable = true
+    var totalPrice: Float = 0
     // MARK: - IBOutlet
 
     @IBOutlet weak var itemsLabel: UILabel!
@@ -82,7 +83,8 @@ class ShopingItemsViewController: UIViewController {
                 }
                 print("Number of shoppingItems loaded: \(self.shoppingItems.count)")
                 print("Number of boughtItems loaded: \(self.boughtItems.count)")
-                self.tableView.reloadData()
+                self.calTotal()
+                self.updateItemsAndTotalpriceLabel()
             } else {
                 KRProgressHUD.showInfo(withMessage: "No snapshot return")
                 return
@@ -123,7 +125,40 @@ class ShopingItemsViewController: UIViewController {
         return headerView
         
     }
-
+    
+    func calTotal() {
+        
+        self.totalPrice = 0
+        
+        for item in shoppingItems {
+            self.totalPrice += item.price
+        }
+        for item in boughtItems {
+            self.totalPrice += item.price
+        }
+        
+        theShoppingList?.totalPrice = self.totalPrice
+        theShoppingList?.totalItems = shoppingItems.count + boughtItems.count
+        
+        // update total price and items in DB
+        theShoppingList?.updateItemInBackground(shoppingList: theShoppingList!, completion: { (error) in
+            if error != nil {
+                KRProgressHUD.showError()
+                return
+            }
+            return
+        })
+        
+    }
+    
+    func updateItemsAndTotalpriceLabel() {
+        
+        itemsLabel.text = "Items left: \(shoppingItems.count)"
+        totalPriceLabel.text = "Total Price: \(String(format: "%.2f", totalPrice))"
+        tableView.reloadData()
+        
+    }
+    
 }
 
 extension ShopingItemsViewController: UITableViewDelegate, UITableViewDataSource {

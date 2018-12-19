@@ -17,4 +17,13 @@ func getCustomDateFormatter() -> DateFormatter {
     return dateFormatter
 }
 
-
+func getImageFrom(stringData: String, withBlock: (_ image: UIImage?) -> Void ) {
+    
+    var image: UIImage?
+    let decodeData = Data(base64Encoded: stringData, options: Data.Base64DecodingOptions(rawValue: 0))
+    guard let theImageData = decodeData else {
+        return
+    }
+    image = UIImage(data: theImageData)
+    withBlock(image) // config the image ( get the roundImage)
+}

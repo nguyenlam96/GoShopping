@@ -52,6 +52,11 @@ class AddItemViewController: UIViewController {
         
     }
     
+    @IBAction func addImageButtonPressed(_ sender: UIButton) {
+        
+    }
+    
+    
     // MARK: - Helper Functions
     func saveItem() {
         

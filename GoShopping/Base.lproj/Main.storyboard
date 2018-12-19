@@ -158,7 +158,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="92.666666666666671"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ShoppingCartEmpty" translatesAutoresizingMaskIntoConstraints="NO" id="w9Y-Ou-3b9">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w9Y-Ou-3b9">
                                                     <rect key="frame" x="15" y="21.333333333333329" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="fIM-7p-hFs"/>
@@ -332,6 +332,9 @@
                                     <constraint firstAttribute="width" constant="37" id="vTR-JU-1hw"/>
                                 </constraints>
                                 <state key="normal" image="PlusFilled"/>
+                                <connections>
+                                    <action selector="addImageButtonPressed:" destination="vKk-hB-ylH" eventType="touchUpInside" id="MBY-4V-LP7"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="sz9-Ec-nc6">
                                 <rect key="frame" x="16" y="259" width="343" height="144"/>

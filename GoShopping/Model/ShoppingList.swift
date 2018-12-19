@@ -71,7 +71,14 @@ class ShoppingList {
         let ref = firebaseRootRef.child(kSHOPPINGLIST).child("1234").child(shoppingList.id)
         ref.removeValue()
         
+    }
+    
+    func updateItemInBackground(shoppingList: ShoppingList, completion: @escaping (_ error: Error?) -> Void ) {
         
+        let ref = firebaseRootRef.child(kSHOPPINGLIST).child("1234").child(shoppingList.id)
+        ref.setValue(dictionaryFromItem(item: shoppingList)) { (error, ref) in
+            completion(error)
+        }
     }
     
 }
