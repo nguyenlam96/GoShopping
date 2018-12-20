@@ -13,6 +13,7 @@ class AddItemViewController: UIViewController {
     
     // MARK: - Properties
     var theShoppingList: ShoppingList!
+    var itemImage: UIImage?
     
     // MARK: - IBOutlet
     
@@ -54,6 +55,26 @@ class AddItemViewController: UIViewController {
     
     @IBAction func addImageButtonPressed(_ sender: UIButton) {
         
+        let camera = Camera(delegate: self)
+        
+        let optionMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let takePhoto = UIAlertAction(title: "Take Photo", style: .default) { (action) in
+            // show camera
+            camera.presentPhotoCamera(target: self, isEditable: true)
+        }
+        let photoLibrary = UIAlertAction(title: "Photo Library", style: .default) { (action) in
+            // show photoLibrary or savedPhotos
+            camera.presentPhotoLibrary(target: self, isEditable: true)
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+        
+        optionMenu.addAction(takePhoto)
+        optionMenu.addAction(photoLibrary)
+        optionMenu.addAction(cancel)
+        
+        present(optionMenu, animated: true)
+        
     }
     
     
@@ -81,4 +102,16 @@ class AddItemViewController: UIViewController {
     }
     
     
+}
+
+extension AddItemViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    // MARK: - UIImagePicker Delegates
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        self.itemImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
+        if let newImage = itemImage {
+            self.itemImageView.image = newImage
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
 }

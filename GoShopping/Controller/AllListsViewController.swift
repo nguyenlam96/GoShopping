@@ -46,9 +46,7 @@ class AllListsViewController: UIViewController {
             self.listNameTextField = nameTextField
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            
-        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) 
         
         let saveAction = UIAlertAction(title: "Save", style: .default) { [unowned self](action) in
             if self.listNameTextField.text != "" {
