@@ -12,9 +12,12 @@ import KRProgressHUD
 class SearchItemViewController: UIViewController {
     
     // MARK: - Properties
+    let searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var tableView: UITableView!
     var groceryItems: [GroceryItem] = []
     var theShoppingList: ShoppingList?
+    var filteredGroceryItem: [GroceryItem] = []
+    
     // MARK: - IBOutlet
 
     
@@ -22,6 +25,7 @@ class SearchItemViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        
         loadItems()
     }
     
@@ -29,6 +33,12 @@ class SearchItemViewController: UIViewController {
     func setup() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
+        
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
     }
     
     // MARK: - IBAction
@@ -93,13 +103,17 @@ extension SearchItemViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - TableView Datasource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groceryItems.count
+        let isSearching = searchController.isActive && searchController.searchBar.text != ""
+        return isSearching ? filteredGroceryItem.count : groceryItems.count
+       // return groceryItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchItem", for: indexPath) as! SearchItemTableViewCell
-        let theItem = groceryItems[indexPath.row]
+        var theItem: GroceryItem
+        let isSearching = searchController.isActive && searchController.searchBar.text != ""
+        theItem = isSearching ? filteredGroceryItem[indexPath.row] : groceryItems[indexPath.row]
         cell.bindData(theItem: theItem)
         return cell
         
@@ -118,11 +132,31 @@ extension SearchItemViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // delete Item
-            let deleteItem = groceryItems[indexPath.row]
+            let isSearching = searchController.isActive && searchController.searchBar.text != ""
+            let deleteItem = isSearching ? filteredGroceryItem[indexPath.row] : groceryItems[indexPath.row]
             deleteItem.deleteItemBackground(groceryItem: deleteItem)
-            groceryItems.remove(at: indexPath.row)
+            isSearching ? filteredGroceryItem.remove(at: indexPath.row) : groceryItems.remove(at: indexPath.row)
             tableView.reloadData()
         }
     }
+    
+}
+
+
+extension SearchItemViewController: UISearchResultsUpdating {
+    
+    func filterContent(with searchText: String, scope: String = "all") {
+        
+        self.filteredGroceryItem = groceryItems.filter({ (groceryItem) -> Bool in
+            return groceryItem.name.lowercased().contains(searchText.lowercased())
+        })
+        
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContent(with: searchController.searchBar.text!)
+        tableView.reloadData()
+    }
+    
     
 }
