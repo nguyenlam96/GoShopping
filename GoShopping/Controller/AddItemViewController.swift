@@ -14,6 +14,8 @@ class AddItemViewController: UIViewController {
     // MARK: - Properties
     var theShoppingList: ShoppingList!
     var itemImage: UIImage?
+    var theItem: ShoppingItem?
+    var isAddingToList: Bool?
     
     // MARK: - IBOutlet
     
@@ -22,12 +24,23 @@ class AddItemViewController: UIViewController {
     @IBOutlet weak var infoTextField: UITextField!
     @IBOutlet weak var quantityTextField: UITextField!
     @IBOutlet weak var priceTextField: UITextField!
+    @IBOutlet weak var vcTitleLabel: UILabel!
     
+    
+    // MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        if theItem != nil {
+            fillItemInfo()
+            vcTitleLabel.text = "Edit item"
+        } else {
+            vcTitleLabel.text = "Add item"
+        }
+        
     }
+    
+    
     
     // MARK: - IBAction
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
@@ -48,7 +61,9 @@ class AddItemViewController: UIViewController {
             KRProgressHUD.showWarning(withMessage: "Price can't be empty")
             return
         }
+        
         saveItem()
+
         self.dismiss(animated: true, completion: nil)
         
     }
@@ -79,29 +94,74 @@ class AddItemViewController: UIViewController {
     
     
     // MARK: - Helper Functions
+    
+    func fillItemInfo() {
+        // set the textField
+        nameTextField.text = self.theItem?.name
+        infoTextField.text = self.theItem?.info
+        quantityTextField.text = String(self.theItem!.quantity)
+        priceTextField.text = String(self.theItem!.price)
+        // set the Image
+        if theItem!.image != "" {
+            getImageFrom(stringData: theItem!.image) { (returnImage) in
+                self.itemImage = returnImage
+                itemImageView.image = self.itemImage
+            }
+        } else {
+            itemImageView.image = UIImage(named: "ShoppingCartEmpty")
+        }
+    }
+    
     func saveItem() {
         
         let name = nameTextField.text!
         let price = Float(priceTextField.text!)!
         let quantity = Int(quantityTextField.text!)!
         let info = infoTextField.text!
-        
-        let shoppingItem = ShoppingItem(name: name, info: info, quantity: quantity, price: price, shoppingListId: theShoppingList.id)
-        
-        shoppingItem.saveItemInBackground(shoppingItem: shoppingItem) { (error) in
-            if error != nil {
-                KRProgressHUD.showError(withMessage: "Save error!")
-                print("Error is: \(error)")
-                return
-            } else {
-               KRProgressHUD.showSuccess(withMessage: "Item added")
-               return
+        // encode image to string
+        var imageDataString: String?
+        if self.itemImage != nil {
+            // having image
+            let jpegDataImage = self.itemImage!.jpegData(compressionQuality: 0.5)
+            if let data = jpegDataImage {
+                imageDataString = data.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
             }
+        } else {
+            imageDataString = ""
         }
         
+//        let shoppingItem = ShoppingItem(name: name, info: info, quantity: quantity, price: price, shoppingListId: theShoppingList.id)
+//        shoppingItem.image = imageDataString!
+        
+        if theItem != nil {
+            // editing item
+            let editedItem = ShoppingItem(name: name, info: info, quantity: quantity, price: price, shoppingListId: theItem!.shoppingItemId)
+            editedItem.image = imageDataString!
+            
+            //shoppingItem.shoppingItemId = theItem!.shoppingItemId
+            editedItem.updateItemInBackground(shoppingItem: editedItem) { (error) in
+                (error != nil) ? KRProgressHUD.showError(withMessage: "Update fail") : KRProgressHUD.showSuccess(withMessage: "Update success!")
+                return
+            }
+        } else if isAddingToList! {
+            // adding to grocery
+            let groceryItem = GroceryItem(name: name, info: info, price: price, image: imageDataString!)
+            groceryItem.saveItemInBackground(groceryItem: groceryItem) { (error) in
+                (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
+            }
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            // create new item to to shopping list
+            let shoppingItem = ShoppingItem(name: name, info: info, quantity: quantity, price: price, shoppingListId: theShoppingList.id)
+            shoppingItem.image = imageDataString!
+            
+            shoppingItem.saveItemInBackground(shoppingItem: shoppingItem) { (error) in
+                error != nil ? KRProgressHUD.showError(withMessage: "Save error!") : KRProgressHUD.showSuccess(withMessage: "Item added")
+                return
+            }
+        }
     }
-    
-    
+ 
 }
 
 extension AddItemViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

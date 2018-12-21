@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		052474C421CBE725008B0F8C /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052474C321CBE725008B0F8C /* Camera.swift */; };
+		052474C621CC2339008B0F8C /* SearchItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052474C521CC2339008B0F8C /* SearchItemViewController.swift */; };
+		052474C821CC23E1008B0F8C /* SearchItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052474C721CC23E1008B0F8C /* SearchItemTableViewCell.swift */; };
+		052474CA21CCEA37008B0F8C /* GroceryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052474C921CCEA37008B0F8C /* GroceryItem.swift */; };
 		0525467621C5057200A533F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0525467521C5057200A533F1 /* AppDelegate.swift */; };
 		0525467B21C5057200A533F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0525467921C5057200A533F1 /* Main.storyboard */; };
 		0525467D21C5057300A533F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0525467C21C5057300A533F1 /* Assets.xcassets */; };
@@ -28,6 +31,9 @@
 
 /* Begin PBXFileReference section */
 		052474C321CBE725008B0F8C /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		052474C521CC2339008B0F8C /* SearchItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemViewController.swift; sourceTree = "<group>"; };
+		052474C721CC23E1008B0F8C /* SearchItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemTableViewCell.swift; sourceTree = "<group>"; };
+		052474C921CCEA37008B0F8C /* GroceryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryItem.swift; sourceTree = "<group>"; };
 		0525467221C5057200A533F1 /* GoShopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoShopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0525467521C5057200A533F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0525467A21C5057200A533F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -102,6 +108,7 @@
 				0525468A21C514F200A533F1 /* AllListsViewController.swift */,
 				0525468C21C5151600A533F1 /* ShopingItemsViewController.swift */,
 				0525469C21C7EE6400A533F1 /* AddItemViewController.swift */,
+				052474C521CC2339008B0F8C /* SearchItemViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -120,6 +127,7 @@
 			children = (
 				0525469021C51F6800A533F1 /* ShoppingList.swift */,
 				0525469A21C6EC1000A533F1 /* ShoppingItem.swift */,
+				052474C921CCEA37008B0F8C /* GroceryItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -129,6 +137,7 @@
 			children = (
 				0525469821C6E2B600A533F1 /* ListTableViewCell.swift */,
 				0525469E21C8049A00A533F1 /* ItemTableViewCell.swift */,
+				052474C721CC23E1008B0F8C /* SearchItemTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -299,12 +308,15 @@
 				0525469721C521E700A533F1 /* Utilities.swift in Sources */,
 				0525469F21C8049A00A533F1 /* ItemTableViewCell.swift in Sources */,
 				0525468B21C514F200A533F1 /* AllListsViewController.swift in Sources */,
+				052474C621CC2339008B0F8C /* SearchItemViewController.swift in Sources */,
+				052474C821CC23E1008B0F8C /* SearchItemTableViewCell.swift in Sources */,
 				0525469121C51F6800A533F1 /* ShoppingList.swift in Sources */,
 				0525469B21C6EC1000A533F1 /* ShoppingItem.swift in Sources */,
 				0525469D21C7EE6400A533F1 /* AddItemViewController.swift in Sources */,
 				052474C421CBE725008B0F8C /* Camera.swift in Sources */,
 				0525469421C520BE00A533F1 /* Constant.swift in Sources */,
 				0525467621C5057200A533F1 /* AppDelegate.swift in Sources */,
+				052474CA21CCEA37008B0F8C /* GroceryItem.swift in Sources */,
 				0525468D21C5151600A533F1 /* ShopingItemsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

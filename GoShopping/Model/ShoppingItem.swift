@@ -30,6 +30,17 @@ class ShoppingItem {
         self.image = ""
     }
     
+    init(name: String, info: String, quantity: Int, price: Float, shoppingListId: String, image: String) {
+        self.name = name
+        self.info = info
+        self.quantity = quantity
+        self.price = price
+        self.shoppingItemId = ""
+        self.shoppingListId = shoppingListId
+        self.isBought = false
+        self.image = image
+    }
+    
     init(dictionary: [String:Any] ) {
         self.name = dictionary[kNAME] as! String
         self.info = dictionary[kINFO] as! String
@@ -42,7 +53,14 @@ class ShoppingItem {
     }
     
     func dictionaryFromItem(item: ShoppingItem) -> [String:Any] {
-        let dict = [kNAME: item.name, kINFO: item.info, kQUANTITY: item.quantity, kPRICE: item.price, kSHOPPINGITEMID: item.shoppingItemId, kSHOPPINGLISTID: item.shoppingListId, kISBOUGHT: item.isBought, kIMAGE: item.image] as [String : Any]
+        let dict = [kNAME: item.name,
+                    kINFO: item.info,
+                    kQUANTITY: item.quantity,
+                    kPRICE: item.price,
+                    kSHOPPINGITEMID: item.shoppingItemId,
+                    kSHOPPINGLISTID: item.shoppingListId,
+                    kISBOUGHT: item.isBought,
+                    kIMAGE: item.image] as [String : Any]
         return dict
     }
     

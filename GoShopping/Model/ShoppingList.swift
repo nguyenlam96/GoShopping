@@ -49,7 +49,12 @@ class ShoppingList {
         let date = getCustomDateFormatter().string(from: item.date) // get dateString
         
         
-        let dict = [kNAME: item.name, kTOTALPRICE: item.totalPrice, kTOTALITEMS: item.totalItems, kSHOPPINGLISTID: item.id, kDATE: date, kOWNERID: item.ownerId] as [String : Any]
+        let dict = [kNAME: item.name,
+                    kTOTALPRICE: item.totalPrice,
+                    kTOTALITEMS: item.totalItems,
+                    kSHOPPINGLISTID: item.id,
+                    kDATE: date,
+                    kOWNERID: item.ownerId] as [String : Any]
         return dict
     }
     

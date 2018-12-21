@@ -202,16 +202,7 @@ extension ShopingItemsViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 93
     }
-    /*
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "Shopping Items"
-        } else {
-            return "Bought Items"
-        }
 
-    }
-    */
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var title = ""
         if section == 0 {
@@ -221,6 +212,22 @@ extension ShopingItemsViewController: UITableViewDelegate, UITableViewDataSource
         }
         return customTableViewSectionHeader(title: title)
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        var theItem: ShoppingItem!
+        
+        theItem = indexPath.section == 0 ? shoppingItems[indexPath.row] : boughtItems[indexPath.row]
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        let addVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
+        addVC.theShoppingList = self.theShoppingList
+        addVC.theItem = theItem
+        
+        self.present(addVC, animated: true)
+        
+    }
+    
     
 }
 

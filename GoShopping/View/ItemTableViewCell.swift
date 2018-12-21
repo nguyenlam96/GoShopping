@@ -17,10 +17,11 @@ class ItemTableViewCell: SwipeTableViewCell {
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var quantityLabel: UILabel!
-
+    @IBOutlet weak var quantityBackgroundView: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        quantityBackgroundView.layer.cornerRadius = quantityBackgroundView.frame.width / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -32,8 +33,8 @@ class ItemTableViewCell: SwipeTableViewCell {
         nameLabel.text = item.name
         infoLabel.text = item.info
         let priceString = String(format: "%.2f", item.price)
-        priceLabel.text = priceString
-        quantityLabel.text = "quantity: \(item.quantity)"
+        priceLabel.text = "$"+priceString
+        quantityLabel.text = "\(item.quantity)"
         
         infoLabel.sizeToFit()
         priceLabel.sizeToFit()
