@@ -22,6 +22,10 @@ class SearchItemViewController: UIViewController {
 
     
     // MARK: - ViewDidLoad
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
+        self.tableView.setContentOffset(CGPoint(x: 0.0, y: 44.0), animated: true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -44,7 +48,7 @@ class SearchItemViewController: UIViewController {
     // MARK: - IBAction
     @IBAction func addButtonPressed(_ sender: UIButton) {
         let addVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
-        addVC.isAddingToList = true
+        addVC.isCreatingNewGroceryItem = true
         self.present(addVC, animated: true)
     }
     
@@ -124,7 +128,17 @@ extension SearchItemViewController: UITableViewDelegate, UITableViewDataSource {
         return 93
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let isSearching = searchController.isActive && searchController.searchBar.text != ""
+        
+        let theGroceryItem = isSearching ? filteredGroceryItem[indexPath.row] : groceryItems[indexPath.row]
+        let addVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
+        addVC.theGroceryItem = theGroceryItem
+        present(addVC, animated: true)
+        
+        
     }
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true

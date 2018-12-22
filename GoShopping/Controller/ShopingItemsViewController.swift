@@ -25,11 +25,12 @@ class ShopingItemsViewController: UIViewController {
     @IBOutlet weak var totalPriceLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
-    // MARK: - ViewDidLoad
+    // MARK: - View
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         loadAllItems()
+        updateItemsAndTotalpriceLabel()
     }
     
     // MARK: - Setup
@@ -152,9 +153,9 @@ class ShopingItemsViewController: UIViewController {
     }
     
     func updateItemsAndTotalpriceLabel() {
-        
+        let currency = UserDefaults.standard.object(forKey: kCURRENCY) as? String
         itemsLabel.text = "Items left: \(shoppingItems.count)"
-        totalPriceLabel.text = "Total Price: \(String(format: "%.2f", totalPrice))"
+        totalPriceLabel.text = "Total Price: \(currency!) \(String(format: "%.2f", totalPrice))"
         tableView.reloadData()
         
     }
@@ -221,8 +222,8 @@ extension ShopingItemsViewController: UITableViewDelegate, UITableViewDataSource
         
         tableView.deselectRow(at: indexPath, animated: true)
         let addVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
-        addVC.theShoppingList = self.theShoppingList
-        addVC.theItem = theItem
+       // addVC.theShoppingList = self.theShoppingList
+        addVC.theShoppingItem = theItem
         
         self.present(addVC, animated: true)
         

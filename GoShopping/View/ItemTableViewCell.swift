@@ -33,7 +33,8 @@ class ItemTableViewCell: SwipeTableViewCell {
         nameLabel.text = item.name
         infoLabel.text = item.info
         let priceString = String(format: "%.2f", item.price)
-        priceLabel.text = "$"+priceString
+        let currency = UserDefaults.standard.object(forKey: kCURRENCY) as? String
+        priceLabel.text = "\(currency!) \(priceString)"
         quantityLabel.text = "\(item.quantity)"
         
         infoLabel.sizeToFit()

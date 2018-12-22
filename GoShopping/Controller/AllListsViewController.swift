@@ -46,7 +46,7 @@ class AllListsViewController: UIViewController {
             self.listNameTextField = nameTextField
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) 
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         
         let saveAction = UIAlertAction(title: "Save", style: .default) { [unowned self](action) in
             if self.listNameTextField.text != "" {
@@ -70,13 +70,13 @@ class AllListsViewController: UIViewController {
     
     func loadList() {
         
-        firebaseRootRef.child(kSHOPPINGLIST).child("1234").observeSingleEvent(of: .value) { (snapshot) in
+        firebaseRootRef.child(kSHOPPINGLIST).child("1234").observe(.value) { (snapshot) in
             
             self.allLists.removeAll()
             
             if snapshot.exists() {
                 let sorted = ((snapshot.value as! NSDictionary).allValues as NSArray).sortedArray(using: [NSSortDescriptor(key: kDATE, ascending: false)])
-
+                
                 for each in sorted {
                     let list = each as! [String:Any]
                     if self.isDataComeBackValid(shoppingListDictionary: list) {
@@ -90,6 +90,7 @@ class AllListsViewController: UIViewController {
             } else {
                 print("Snapshot doesn't exist")
             }
+            
         }
         
     }

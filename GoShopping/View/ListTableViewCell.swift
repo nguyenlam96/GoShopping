@@ -34,13 +34,11 @@ class ListTableViewCell: UITableViewCell {
         let currentDateFormatter = DateFormatter()
         currentDateFormatter.dateFormat = "dd/MM/yyyy"
         
-        
-        
-        
         nameLabel.text = "\(item.name)"
         totalItemsLabel.text = "\(item.totalItems)"
+        let currency = UserDefaults.standard.object(forKey: kCURRENCY) as? String
         let totalPriceString = String(format: "%.2f", item.totalPrice)
-        totalPriceLabel.text = "Total $" + totalPriceString
+        totalPriceLabel.text = "Total \(currency!) " + totalPriceString
         let dateString = currentDateFormatter.string(from: item.date)
         dateLabel.text = dateString
         
