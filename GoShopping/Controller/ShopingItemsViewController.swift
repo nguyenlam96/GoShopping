@@ -44,9 +44,20 @@ class ShopingItemsViewController: UIViewController {
     // MARK: - IBAction
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+//        let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+//        let addNewItemAction = UIAlertAction(title: "New Item", style: .default) { (action) in
+//            
+//        }
+//        let selectFromGroceryAction = UIAlertAction(title: "Search From Grocery", style: .default) { (action) in
+//            
+//        }
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { (action) in
+//            return
+//        }
+        
         // instantiate AddItemVC
         let addItemVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
-        
         if let theShoppingList = self.theShoppingList {
             addItemVC.theShoppingList = theShoppingList
             self.present(addItemVC, animated: true)

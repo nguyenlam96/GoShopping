@@ -56,7 +56,7 @@ class SearchItemViewController: UIViewController {
     // MARK: - Helper Functions
     func loadItems() {
         
-        firebaseRootRef.child(kGROCERYITEM).child("1234").observe(.value) { [unowned self](snapshot) in
+        firebaseRootRef.child(kGROCERYITEM).child(FUser.getCurrentID()!).observe(.value) { [unowned self](snapshot) in
             
             self.groceryItems.removeAll()
             

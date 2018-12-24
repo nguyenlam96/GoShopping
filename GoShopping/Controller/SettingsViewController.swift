@@ -43,6 +43,14 @@ class SettingsViewController: UIViewController {
     // MARK: - IBAction
     @IBAction func signOutButtonPressed(_ sender: UIButton) {
         
+        FUser.logOutCurrentUser { [unowned self](success) in
+            if success! {
+                cleanFirebaseObserver()
+                let loginView = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginView") as! LoginViewController
+                self.present(loginView, animated: true)
+            }
+        }
+        
     }
     @IBAction func backgroundButton(_ sender: UIButton) {
         self.view.endEditing(true)

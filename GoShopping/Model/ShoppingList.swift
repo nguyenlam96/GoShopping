@@ -23,7 +23,7 @@ class ShoppingList {
         self.totalItems = 0
         self.id = id
         self.date = Date()
-        self.ownerId = "1234"
+        self.ownerId = FUser.getCurrentID()!
     }
     
     init(name: String, totalPrice: Float = 0, totalItems: Int, id: String = "", date: Date, ownerId: String) {
@@ -60,7 +60,7 @@ class ShoppingList {
     
     func saveItemInBackground(shoppingList: ShoppingList, completion: @escaping (_ error: Error?) -> Void ) {
         
-        let ref = firebaseRootRef.child(kSHOPPINGLIST).child("1234").childByAutoId() // automatically create an unique id
+        let ref = firebaseRootRef.child(kSHOPPINGLIST).child(FUser.getCurrentID()!).childByAutoId() // automatically create an unique id
         shoppingList.id = ref.key! // assign this unique id to shoppingList ID
 
         let itemDictionary = dictionaryFromItem(item: shoppingList)
@@ -73,14 +73,14 @@ class ShoppingList {
     
     func deleteItemBackground(shoppingList: ShoppingList) {
         
-        let ref = firebaseRootRef.child(kSHOPPINGLIST).child("1234").child(shoppingList.id)
+        let ref = firebaseRootRef.child(kSHOPPINGLIST).child(FUser.getCurrentID()!).child(shoppingList.id)
         ref.removeValue()
         
     }
     
     func updateItemInBackground(shoppingList: ShoppingList, completion: @escaping (_ error: Error?) -> Void ) {
         
-        let ref = firebaseRootRef.child(kSHOPPINGLIST).child("1234").child(shoppingList.id)
+        let ref = firebaseRootRef.child(kSHOPPINGLIST).child(FUser.getCurrentID()!).child(shoppingList.id)
         ref.setValue(dictionaryFromItem(item: shoppingList)) { (error, ref) in
             completion(error)
         }
