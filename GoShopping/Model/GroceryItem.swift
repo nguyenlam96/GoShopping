@@ -26,6 +26,15 @@ class GroceryItem {
         self.groceryItemId = ""
     }
     
+    init(shoppingItem: ShoppingItem) {
+        self.name = shoppingItem.name
+        self.info = shoppingItem.info
+        self.price = shoppingItem.price
+        self.image = shoppingItem.image
+        self.ownerId = ("\(FUser.getCurrentID())")
+        self.groceryItemId = ""
+    }
+    
     init(dictionary: [String:Any] ) {
         self.name = dictionary[kNAME] as! String
         self.info = dictionary[kINFO] as! String

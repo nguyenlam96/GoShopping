@@ -27,7 +27,7 @@ class SearchItemViewController: UIViewController {
     var groceryItems: [GroceryItem] = []
     var theShoppingList: ShoppingList?
     var filteredGroceryItem: [GroceryItem] = []
-    var clickToEdit = true
+    var selectFromTapBar = true
     // MARK: - IBOutlet
 
     
@@ -48,6 +48,9 @@ class SearchItemViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        
+        cancelButtonOutlet.isHidden = selectFromTapBar
+        addButtonOutlet.isHidden = !selectFromTapBar
         
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
@@ -148,7 +151,7 @@ extension SearchItemViewController: UITableViewDelegate, UITableViewDataSource {
         
         let theGroceryItem = isSearching ? filteredGroceryItem[indexPath.row] : groceryItems[indexPath.row]
         
-        if !clickToEdit {
+        if !selectFromTapBar {
             // add to shopping list
             self.delegate!.didChooseItem(groceryItem: theGroceryItem)
             self.dismiss(animated: true, completion: nil)

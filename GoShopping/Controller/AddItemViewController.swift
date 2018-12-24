@@ -77,8 +77,6 @@ class AddItemViewController: UIViewController {
         }
         
         saveItem()
-
-        self.dismiss(animated: true, completion: nil)
         
     }
     
@@ -109,39 +107,28 @@ class AddItemViewController: UIViewController {
     
     // MARK: - Helper Functions
     
-//    func fillItemInfo() {
-//        if theShoppingItem != nil {
-//            // set the textField
-//            nameTextField.text = self.theShoppingItem?.name
-//            infoTextField.text = self.theShoppingItem?.info
-//            quantityTextField.text = String(self.theShoppingItem!.quantity)
-//            priceTextField.text = String(self.theShoppingItem!.price)
-//            // set the Image
-//            if theShoppingItem!.image != "" {
-//                getImageFrom(stringData: theShoppingItem!.image) { (returnImage) in
-//                    self.itemImage = returnImage
-//                    itemImageView.image = self.itemImage
-//                }
-//            } else {
-//                itemImageView.image = UIImage(named: "ShoppingCartEmpty")
-//            }
-//        } else if theGroceryItem != nil {
-//            // set the textField
-//            nameTextField.text = self.theGroceryItem?.name
-//            infoTextField.text = self.theGroceryItem?.info
-//            priceTextField.text = String(self.theGroceryItem!.price)
-//            // set the Image
-//            if theGroceryItem!.image != "" {
-//                getImageFrom(stringData: theGroceryItem!.image) { (returnImage) in
-//                    self.itemImage = returnImage
-//                    itemImageView.image = self.itemImage
-//                }
-//            } else {
-//                itemImageView.image = UIImage(named: "ShoppingCartEmpty")
-//            }
-//        }
-//
-//    }
+    func confirmToAddToGroceryList(newShoppingItem: ShoppingItem) {
+        
+        let ac = UIAlertController(title: "\(newShoppingItem.name)", message: "Do you want to add this item to grocery list", preferredStyle: .alert)
+        
+        let noAction = UIAlertAction(title: "No", style: .destructive) { [unowned self](action) in
+            print("Hit No")
+            self.dismiss(animated: true, completion: nil)
+        }
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { (action) in
+            // save to grocery list
+            let groceryItem = GroceryItem(shoppingItem: newShoppingItem)
+            print("Grocery created")
+            groceryItem.saveItemInBackground(groceryItem: groceryItem, completion: { (error) in
+                (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
+                print("Grocery Saved In background")
+            })
+            self.dismiss(animated: true, completion: nil)
+        }
+        ac.addAction(noAction)
+        ac.addAction(yesAction)
+        self.present(ac, animated: true)
+    }
     
     func fillItemInfo(with item: ShoppingItem) {
         // set the textField
@@ -197,13 +184,14 @@ class AddItemViewController: UIViewController {
             // create new shopping Item
             let newShoppingItem = ShoppingItem(name: name, info: info, quantity: quantity, price: price, shoppingListId: theShoppingList!.id)
             newShoppingItem.image = imageDataString!
-            
+            print("New Shopping Item Created")
             newShoppingItem.saveItemInBackground(shoppingItem: newShoppingItem) { (error) in
-                (error != nil) ? KRProgressHUD.showError(withMessage: "Save error!") : KRProgressHUD.showSuccess(withMessage: "Item added")
-                return
+                if error != nil {
+                    KRProgressHUD.showError(withMessage: "Save shopping Item error!")
+                }
+                print("New shopping Item saved")
             }
-            
-            
+            self.confirmToAddToGroceryList(newShoppingItem: newShoppingItem)
             
         }
         else if theShoppingItem != nil {
@@ -233,7 +221,6 @@ class AddItemViewController: UIViewController {
                 return
             }
         }
-        self.dismiss(animated: true, completion: nil)
     } // end saveItem() here
  
 }

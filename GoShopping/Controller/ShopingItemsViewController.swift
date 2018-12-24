@@ -51,15 +51,17 @@ class ShopingItemsViewController: UIViewController {
             // instantiate AddItemVC
             let addItemVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
             if let theShoppingList = self.theShoppingList {
+                
                 addItemVC.theShoppingList = theShoppingList
                 self.present(addItemVC, animated: true)
+                
             }
         }
         let selectFromGroceryAction = UIAlertAction(title: "Search From Grocery", style: .default) { (action) in
             let searchItemVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchItemVC") as! SearchItemViewController
             
             searchItemVC.delegate = self
-            searchItemVC.clickToEdit = false
+            searchItemVC.selectFromTapBar = false
             
             self.present(searchItemVC, animated: true)
             
@@ -103,8 +105,6 @@ class ShopingItemsViewController: UIViewController {
                         continue
                     }
                 }
-                print("Number of shoppingItems loaded: \(self.shoppingItems.count)")
-                print("Number of boughtItems loaded: \(self.boughtItems.count)")
                 self.calTotal()
                 self.updateItemsAndTotalpriceLabel()
             } else {

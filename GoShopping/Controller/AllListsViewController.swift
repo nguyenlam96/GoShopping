@@ -86,7 +86,6 @@ class AllListsViewController: UIViewController {
                         continue
                     }
                 }
-                print("Number of list loaded: \(self.allLists.count)")
                 self.tableView.reloadData()
             } else {
                 print("Snapshot doesn't exist")
