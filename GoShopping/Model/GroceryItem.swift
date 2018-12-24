@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import KRProgressHUD
 
 class GroceryItem {
     
@@ -61,10 +62,25 @@ class GroceryItem {
         
         let itemDictionary = dictionaryFromItem(item: groceryItem)
         ref.setValue(itemDictionary) { (error, ref) in
-            
             completion(error)
-            
         }
+        print("==saveItemInBackground() has end here")
+    }
+    
+    func saveItemInBackground(groceryItem: GroceryItem) {
+        
+        let ref = firebaseRootRef.child(kGROCERYITEM).child(FUser.getCurrentID()!).childByAutoId() // automatically create an unique id
+        groceryItem.groceryItemId = ref.key! // assign this unique id to shoppingList ID
+        
+        let itemDictionary = dictionaryFromItem(item: groceryItem)
+        ref.setValue(itemDictionary) { (error, ref) in
+            if error != nil {
+                KRProgressHUD.showError(withMessage: "Fail to handle")
+            } else {
+                KRProgressHUD.showSuccess(withMessage: "Handle success")
+            }
+        }
+        
     }
     
 
@@ -76,6 +92,7 @@ class GroceryItem {
         }
         
     }
+    
     
     func deleteItemBackground(groceryItem: GroceryItem) {
         

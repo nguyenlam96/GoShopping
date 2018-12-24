@@ -120,9 +120,13 @@ class AddItemViewController: UIViewController {
             let groceryItem = GroceryItem(shoppingItem: newShoppingItem)
             print("Grocery created")
             groceryItem.saveItemInBackground(groceryItem: groceryItem, completion: { (error) in
-                (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
-                print("Grocery Saved In background")
+                 print("Error handler for saveItemInBackground() goes here")
+                 (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
+               print("Grocery Saved In background")
+               
             })
+           // groceryItem.saveItemInBackground(groceryItem: groceryItem) // handler error directly in saveItemBackground()
+
             self.dismiss(animated: true, completion: nil)
         }
         ac.addAction(noAction)
@@ -202,7 +206,7 @@ class AddItemViewController: UIViewController {
             editedShoppingItem.image = imageDataString!
             //shoppingItem.shoppingItemId = theItem!.shoppingItemId
             editedShoppingItem.updateItemInBackground(shoppingItem: editedShoppingItem) { (error) in
-                (error != nil) ? KRProgressHUD.showError(withMessage: "Update fail") : KRProgressHUD.showSuccess(withMessage: "Update success!")
+                return (error != nil) ? KRProgressHUD.showError(withMessage: "Update fail") : KRProgressHUD.showSuccess(withMessage: "Update success!")
                 return
             }
         } else if theGroceryItem != nil {
@@ -210,15 +214,15 @@ class AddItemViewController: UIViewController {
             let groceryItem = GroceryItem(name: name, info: info, price: price, image: imageDataString!)
             groceryItem.groceryItemId = theGroceryItem!.groceryItemId
             groceryItem.updateItemInBackground(groceryItem: groceryItem) { (error) in
-                (error != nil) ? KRProgressHUD.showError(withMessage: "Update fail") : KRProgressHUD.showSuccess(withMessage: "Update success!")
-                return
+                return (error != nil) ? KRProgressHUD.showError(withMessage: "Update fail") : KRProgressHUD.showSuccess(withMessage: "Update success!")
+                
             }
         } else if isCreatingNewGroceryItem {
             // create new grocery item
             let groceryItem = GroceryItem(name: name, info: info, price: price, image: imageDataString!)
             groceryItem.saveItemInBackground(groceryItem: groceryItem) { (error) in
-                (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
-                return
+                return (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
+                
             }
         }
     } // end saveItem() here

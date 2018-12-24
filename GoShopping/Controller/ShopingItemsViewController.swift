@@ -342,8 +342,8 @@ extension ShopingItemsViewController: SearchItemViewControllerDelegate {
         shoppingItem.shoppingListId = theShoppingList!.id
         shoppingItem.saveItemInBackground(shoppingItem: shoppingItem) { (error) in
             
-            (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
-            return
+            return (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
+            
         }
     }
     
