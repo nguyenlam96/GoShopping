@@ -45,23 +45,33 @@ class ShopingItemsViewController: UIViewController {
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
-//        let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-//        let addNewItemAction = UIAlertAction(title: "New Item", style: .default) { (action) in
-//            
-//        }
-//        let selectFromGroceryAction = UIAlertAction(title: "Search From Grocery", style: .default) { (action) in
-//            
-//        }
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { (action) in
-//            return
-//        }
+        let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        // instantiate AddItemVC
-        let addItemVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
-        if let theShoppingList = self.theShoppingList {
-            addItemVC.theShoppingList = theShoppingList
-            self.present(addItemVC, animated: true)
+        let addNewItemAction = UIAlertAction(title: "New Item", style: .default) { [unowned self](action) in
+            // instantiate AddItemVC
+            let addItemVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
+            if let theShoppingList = self.theShoppingList {
+                addItemVC.theShoppingList = theShoppingList
+                self.present(addItemVC, animated: true)
+            }
         }
+        let selectFromGroceryAction = UIAlertAction(title: "Search From Grocery", style: .default) { (action) in
+            let searchItemVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchItemVC") as! SearchItemViewController
+            
+            searchItemVC.delegate = self
+            searchItemVC.clickToEdit = false
+            
+            self.present(searchItemVC, animated: true)
+            
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { (action) in
+            return
+        }
+        
+        ac.addAction(addNewItemAction)
+        ac.addAction(selectFromGroceryAction)
+        ac.addAction(cancelAction)
+        self.present(ac, animated: true)
         
     }
     
@@ -322,4 +332,20 @@ extension ShopingItemsViewController: SwipeTableViewCellDelegate {
         
     }
 
+}
+
+extension ShopingItemsViewController: SearchItemViewControllerDelegate {
+    
+    func didChooseItem(groceryItem: GroceryItem) {
+        print("Did choose \(groceryItem.name)")
+        let shoppingItem = ShoppingItem(groceryItem: groceryItem)
+        shoppingItem.shoppingListId = theShoppingList!.id
+        shoppingItem.saveItemInBackground(shoppingItem: shoppingItem) { (error) in
+            
+            (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
+            return
+        }
+    }
+    
+    
 }

@@ -64,6 +64,17 @@ class ShoppingItem {
         return dict
     }
     
+    init(groceryItem: GroceryItem) {
+        self.name = groceryItem.name
+        self.info = groceryItem.info
+        self.price = groceryItem.price
+        self.image = groceryItem.image
+        self.quantity = 1
+        self.shoppingItemId = ""
+        self.shoppingListId = ""
+        self.isBought = false
+    }
+    
     func saveItemInBackground(shoppingItem: ShoppingItem, completion: @escaping (_ error: Error?) -> Void ) {
         
         let ref = firebaseRootRef.child(kSHOPPINGITEM).child(shoppingItem.shoppingListId).childByAutoId() // automatically create an unique id

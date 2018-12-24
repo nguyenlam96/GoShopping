@@ -9,15 +9,25 @@
 import UIKit
 import KRProgressHUD
 
+protocol SearchItemViewControllerDelegate {
+    func didChooseItem(groceryItem: GroceryItem)
+}
+
 class SearchItemViewController: UIViewController {
     
     // MARK: - Properties
+    
+    var delegate: SearchItemViewControllerDelegate?
+    
     let searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var cancelButtonOutlet: UIButton!
+    @IBOutlet weak var addButtonOutlet: UIButton!
+    
     var groceryItems: [GroceryItem] = []
     var theShoppingList: ShoppingList?
     var filteredGroceryItem: [GroceryItem] = []
-    
+    var clickToEdit = true
     // MARK: - IBOutlet
 
     
@@ -50,6 +60,9 @@ class SearchItemViewController: UIViewController {
         let addVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
         addVC.isCreatingNewGroceryItem = true
         self.present(addVC, animated: true)
+    }
+    @IBAction func cancelButtonPressed(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     
@@ -134,9 +147,19 @@ extension SearchItemViewController: UITableViewDelegate, UITableViewDataSource {
         let isSearching = searchController.isActive && searchController.searchBar.text != ""
         
         let theGroceryItem = isSearching ? filteredGroceryItem[indexPath.row] : groceryItems[indexPath.row]
-        let addVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
-        addVC.theGroceryItem = theGroceryItem
-        present(addVC, animated: true)
+        
+        if !clickToEdit {
+            // add to shopping list
+            self.delegate!.didChooseItem(groceryItem: theGroceryItem)
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            // edit grocery item
+            let addVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddItemVC") as! AddItemViewController
+            addVC.theGroceryItem = theGroceryItem
+            present(addVC, animated: true)
+        }
+        
+        
         
         
     }

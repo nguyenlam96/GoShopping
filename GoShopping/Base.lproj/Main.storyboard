@@ -24,14 +24,14 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vo2-pv-Wh3">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="user1@gmail.com" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vo2-pv-Wh3">
                                 <rect key="frame" x="77" y="225" width="222" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7sk-JJ-QuH">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="123123" borderStyle="roundedRect" placeholder="password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7sk-JJ-QuH">
                                 <rect key="frame" x="77" y="263" width="222" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
@@ -285,7 +285,7 @@
         <!--Search Item View Controller-->
         <scene sceneID="3oK-dv-ZzP">
             <objects>
-                <viewController id="X7J-EZ-WuD" customClass="SearchItemViewController" customModule="GoShopping" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchItemVC" id="X7J-EZ-WuD" customClass="SearchItemViewController" customModule="GoShopping" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dxw-Pn-B6V">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -373,14 +373,28 @@
                                             <action selector="addButtonPressed:" destination="X7J-EZ-WuD" eventType="touchUpInside" id="fsk-jC-5p0"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lxc-Na-UyZ">
+                                        <rect key="frame" x="8" y="42" width="50" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="5oY-tA-8At"/>
+                                            <constraint firstAttribute="height" constant="30" id="LAK-Vy-E0S"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="cancelButtonPressed:" destination="X7J-EZ-WuD" eventType="touchUpInside" id="6w5-1J-p75"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.010124513879418373" green="0.90997183322906494" blue="0.99123078584671021" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="lxc-Na-UyZ" firstAttribute="leading" secondItem="6nn-9j-7Qx" secondAttribute="leading" constant="8" id="AeK-1f-wED"/>
                                     <constraint firstAttribute="trailing" secondItem="ZbP-bc-9bS" secondAttribute="trailing" constant="20" id="QMK-KY-Pso"/>
                                     <constraint firstAttribute="bottom" secondItem="pVx-LB-ZKL" secondAttribute="bottom" constant="15" id="SFt-0V-UXJ"/>
                                     <constraint firstItem="ZbP-bc-9bS" firstAttribute="top" secondItem="6nn-9j-7Qx" secondAttribute="top" constant="40" id="UZY-r8-apg"/>
                                     <constraint firstItem="ZbP-bc-9bS" firstAttribute="leading" secondItem="6nn-9j-7Qx" secondAttribute="leading" constant="20" id="Ubi-nR-SDU"/>
                                     <constraint firstAttribute="height" constant="80" id="YuP-qR-yS1"/>
+                                    <constraint firstAttribute="bottom" secondItem="lxc-Na-UyZ" secondAttribute="bottom" constant="8" id="q3P-vX-VZh"/>
                                     <constraint firstItem="ZbP-bc-9bS" firstAttribute="centerX" secondItem="6nn-9j-7Qx" secondAttribute="centerX" id="tCn-fi-aZ7"/>
                                     <constraint firstAttribute="trailing" secondItem="pVx-LB-ZKL" secondAttribute="trailing" constant="20" id="yPX-6s-ET9"/>
                                 </constraints>
@@ -400,6 +414,8 @@
                     </view>
                     <tabBarItem key="tabBarItem" systemItem="search" id="wdW-j2-KVE"/>
                     <connections>
+                        <outlet property="addButtonOutlet" destination="pVx-LB-ZKL" id="66c-S3-vEN"/>
+                        <outlet property="cancelButtonOutlet" destination="lxc-Na-UyZ" id="2k6-je-leV"/>
                         <outlet property="tableView" destination="jrG-sG-kId" id="RPr-yj-G5W"/>
                     </connections>
                 </viewController>
@@ -509,14 +525,14 @@
                                 <rect key="frame" x="0.0" y="88" width="375" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Items" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AcR-MF-zJW">
-                                        <rect key="frame" x="8" y="10" width="150" height="21"/>
+                                        <rect key="frame" x="8" y="10" width="112" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
                                         <color key="textColor" red="0.27865759379999999" green="0.4667057966" blue="0.35998596020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4IS-TI-6rY">
-                                        <rect key="frame" x="214" y="10" width="150" height="21"/>
+                                        <rect key="frame" x="154" y="10" width="210" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
                                         <color key="textColor" red="0.27865759379999999" green="0.4667057966" blue="0.35998596020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
