@@ -272,13 +272,7 @@ extension ShopingItemsViewController: SwipeTableViewCellDelegate {
                 // update DB
                 item.isBought = !item.isBought
                 item.updateItemInBackground(shoppingItem: item, completion: { (error) in
-                    if error != nil {
-                        KRProgressHUD.showError(withMessage: "Error update item")
-                        return
-                    } else {
-                        KRProgressHUD.showSuccess(withMessage: "Success buy item")
-                        return
-                    }
+                    (error != nil) ? KRProgressHUD.showError(withMessage: "Error update item") : KRProgressHUD.showSuccess(withMessage: "Success buy item")
                 })
                 // move item to another section
                 if indexPath.section == 0 {
@@ -290,10 +284,22 @@ extension ShopingItemsViewController: SwipeTableViewCellDelegate {
                 }
                 tableView.reloadData()
             }
+            
+            let addToCategoryAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
+                let groceryItem = GroceryItem(shoppingItem: item)
+                groceryItem.saveItemInBackground(groceryItem: groceryItem, completion: { (error) in
+                    (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
+                })
+                tableView.reloadData()
+            }
+            
+            addToCategoryAction.accessibilityLabel = "Add to Category"
+            configure(action: addToCategoryAction, with: .addToCategory)
+            
             buyAction.accessibilityLabel = item.isBought ? "Buy" : "Return"
             let description: ActionDescription = item.isBought ? .returnPurchase : .buy
             configure(action: buyAction, with: description)
-            return [buyAction]
+            return [buyAction, addToCategoryAction]
         } else { // swipe to the left --> delete
             let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
                 // update DB

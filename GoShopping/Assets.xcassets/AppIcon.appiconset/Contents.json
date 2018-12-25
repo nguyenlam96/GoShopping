@@ -1,33 +1,28 @@
 {
   "images" : [
     {
-      "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "icons8-shopping-cart-filled-40.png",
+      "size" : "20x20",
       "scale" : "2x"
     },
     {
-      "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "icons8-shopping-cart-filled-60.png",
+      "size" : "20x20",
       "scale" : "3x"
     },
     {
-      "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "icons8-shopping-cart-filled-58.png",
+      "size" : "29x29",
       "scale" : "2x"
     },
     {
-      "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "icons8-shopping-cart-filled-87.png",
+      "size" : "29x29",
       "scale" : "3x"
     },
     {
+      "idiom" : "iphone",
       "size" : "40x40",
-      "idiom" : "iphone",
-      "filename" : "icons8-shopping-cart-filled-80.png",
       "scale" : "2x"
     },
     {
@@ -38,7 +33,7 @@
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "icons8-shopping-cart-filled-100.png",
+      "filename" : "apple-touch-icon.png",
       "scale" : "2x"
     },
     {

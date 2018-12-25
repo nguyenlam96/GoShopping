@@ -207,23 +207,23 @@ class AddItemViewController: UIViewController {
             //shoppingItem.shoppingItemId = theItem!.shoppingItemId
             editedShoppingItem.updateItemInBackground(shoppingItem: editedShoppingItem) { (error) in
                 return (error != nil) ? KRProgressHUD.showError(withMessage: "Update fail") : KRProgressHUD.showSuccess(withMessage: "Update success!")
-                return
             }
+            self.dismiss(animated: true, completion: nil)
         } else if theGroceryItem != nil {
             // edit grocery item
             let groceryItem = GroceryItem(name: name, info: info, price: price, image: imageDataString!)
             groceryItem.groceryItemId = theGroceryItem!.groceryItemId
             groceryItem.updateItemInBackground(groceryItem: groceryItem) { (error) in
                 return (error != nil) ? KRProgressHUD.showError(withMessage: "Update fail") : KRProgressHUD.showSuccess(withMessage: "Update success!")
-                
             }
+            self.dismiss(animated: true, completion: nil)
         } else if isCreatingNewGroceryItem {
             // create new grocery item
             let groceryItem = GroceryItem(name: name, info: info, price: price, image: imageDataString!)
             groceryItem.saveItemInBackground(groceryItem: groceryItem) { (error) in
                 return (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
-                
             }
+            self.dismiss(animated: true, completion: nil)
         }
     } // end saveItem() here
  

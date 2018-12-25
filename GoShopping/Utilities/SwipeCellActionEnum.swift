@@ -14,6 +14,7 @@ enum ActionDescription {
     case buy
     case trash
     case returnPurchase
+    case addToCategory
     
     var title: String {
         switch self {
@@ -23,7 +24,10 @@ enum ActionDescription {
             return "Trash"
         case .returnPurchase:
             return "Return"
+        case .addToCategory:
+            return "Add To Category"
         }
+        
     }
     
     var image: UIImage  {
@@ -35,7 +39,10 @@ enum ActionDescription {
             imageName = "Trash"
         case .returnPurchase:
             imageName = "ReturnFilled"
+        case .addToCategory:
+            imageName = "addCategory"
         }
+        
         return UIImage(named: imageName)!
     }
     
@@ -46,6 +53,8 @@ enum ActionDescription {
         case .trash:
             return UIColor.red
         case .returnPurchase:
+            return UIColor.darkGray
+        case .addToCategory:
             return UIColor.darkGray
         }
     }

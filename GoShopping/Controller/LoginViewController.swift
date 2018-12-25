@@ -8,6 +8,7 @@
 
 import UIKit
 import KRProgressHUD
+import NotificationCenter
 
 class LoginViewController: UIViewController {
     
@@ -15,11 +16,17 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
+    // MARK: - View
     override func viewDidLoad() {
         super.viewDidLoad()
-        dismissKeyboardWhenTappingAround()
-        // Do any additional setup after loading the view.
+        setup()
     }
+
+    // MARK: - Setup
+    func setup() {
+        dismissKeyboardWhenTappingAround()
+    }
+
     
     // MARK: - IBAction
     @IBAction func signInButtonPressed(_ sender: UIButton) {
