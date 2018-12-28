@@ -17,10 +17,12 @@ class SettingsViewController: UIViewController {
     // MARK: - IBOutlet
     @IBOutlet weak var signOutButtonOutlet: UIButton!
     @IBOutlet weak var currencyTextField: UITextField!
+    @IBOutlet weak var usernameLabel: UILabel!
     
     // MARK: - View
     override func viewWillAppear(_ animated: Bool) {
         loadCurrencyFromUserDefault()
+        setUserInfo()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +34,18 @@ class SettingsViewController: UIViewController {
     // MARK: - Setup
     func setup() {
         signOutButtonOutlet.layer.cornerRadius = 15
+        //setUsername()
         currencyPicker = UIPickerView()
         currencyPicker.delegate = self
         currencyTextField.delegate = self
         currencyTextField.inputView = currencyPicker
     }
+    
+    func setUserInfo() {
+        let userName = FUser.currentUser()?.fullName ?? "User"
+        usernameLabel.text = "Hello, \(userName)"
+    }
+    
     func loadCurrencyFromUserDefault() {
         self.currencyTextField.text = UserDefaults.standard.object(forKey: kCURRENCY) as? String
     }
