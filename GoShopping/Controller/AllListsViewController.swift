@@ -21,7 +21,13 @@ class AllListsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    // MARK: - ViewDidLoad
+    // // MARK: - ViewLifeCycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         KRProgressHUD.dismiss()
@@ -29,12 +35,16 @@ class AllListsViewController: UIViewController {
         loadList()
     }
     
+    deinit {
+        print("\(#file) is deinitialized")
+    }
+    
     // MARK: - Setup
     func setup() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
-        title = "Shopping Lists"
+        self.title = "Your Lists"
     }
     
     // MARK: - IBAction
@@ -71,12 +81,12 @@ class AllListsViewController: UIViewController {
     
     func loadList() {
         
-        firebaseRootRef.child(kSHOPPINGLIST).child(FUser.getCurrentID()!).observe(.value) { (snapshot) in
+        firebaseRootRef.child(kSHOPPINGLIST).child(FUser.getCurrentID()!).observe(.value) { [unowned self] (snapshot) in
             
             self.allLists.removeAll()
             
             if snapshot.exists() {
-                let sorted = ((snapshot.value as! NSDictionary).allValues as NSArray).sortedArray(using: [NSSortDescriptor(key: kDATE, ascending: false)])
+                let sorted = ((snapshot.value as! NSDictionary).allValues as NSArray).sortedArray(using: [NSSortDescriptor(key: kDATE, ascending: false)] )
                 
                 for each in sorted {
                     let list = each as! [String:Any]
@@ -87,8 +97,6 @@ class AllListsViewController: UIViewController {
                     }
                 }
                 self.tableView.reloadData()
-            } else {
-                print("Snapshot doesn't exist")
             }
             
         }
@@ -102,7 +110,7 @@ class AllListsViewController: UIViewController {
         
         shoppingList.saveItemInBackground(shoppingList: shoppingList) { [unowned self] (error) in
             if error != nil {
-                KRProgressHUD.showError(withMessage: "Error creating shop list")
+                KRProgressHUD.showError(withMessage: "Fail to create shop list")
                 return
             }
             self.allLists.append(shoppingList)

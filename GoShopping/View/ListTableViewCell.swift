@@ -20,6 +20,7 @@ class ListTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -35,10 +36,10 @@ class ListTableViewCell: UITableViewCell {
         currentDateFormatter.dateFormat = "dd/MM/yyyy"
         
         nameLabel.text = "\(item.name)"
-        totalItemsLabel.text = "\(item.totalItems)"
+        totalItemsLabel.text = "Items: \(item.totalItems)"
         let currency = UserDefaults.standard.object(forKey: kCURRENCY) as? String
-        let totalPriceString = String(format: "%.2f", item.totalPrice)
-        totalPriceLabel.text = "Total \(currency!) " + totalPriceString
+        let totalPriceString = String(format: "%.1f", item.totalPrice)
+        totalPriceLabel.text = "Total \(totalPriceString) " + currency!
         let dateString = currentDateFormatter.string(from: item.date)
         dateLabel.text = dateString
         

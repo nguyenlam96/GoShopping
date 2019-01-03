@@ -32,7 +32,7 @@ class SearchItemTableViewCell: UITableViewCell {
         itemNameLabel.text = theItem.name
         itemInfoLabel.text = theItem.info
         let currency = UserDefaults.standard.object(forKey: kCURRENCY) as? String
-        itemPriceLabel.text = "\(currency!) \(String(format: "%.2f", theItem.price))"
+        itemPriceLabel.text = "\(String(format: "%.1f", theItem.price)) \(currency!) "
         
         if theItem.image != "" { // having image
             getImageFrom(stringData: theItem.image) { (image) in

@@ -34,9 +34,12 @@ class AddItemViewController: UIViewController {
         setup()
         
     }
-    
+    deinit {
+        print("\(#file) is deinitialized")
+    }
     // MARK: - Setup
     func setup() {
+        
         if theShoppingList != nil {
             vcTitleLabel.text = "Add New Item"
         }
@@ -118,12 +121,8 @@ class AddItemViewController: UIViewController {
         let yesAction = UIAlertAction(title: "Yes", style: .default) { (action) in
             // save to grocery list
             let groceryItem = GroceryItem(shoppingItem: newShoppingItem)
-            print("Grocery created")
             groceryItem.saveItemInBackground(groceryItem: groceryItem, completion: { (error) in
-                 print("Error handler for saveItemInBackground() goes here")
                  (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
-               print("Grocery Saved In background")
-               
             })
            // groceryItem.saveItemInBackground(groceryItem: groceryItem) // handler error directly in saveItemBackground()
 
@@ -188,12 +187,10 @@ class AddItemViewController: UIViewController {
             // create new shopping Item
             let newShoppingItem = ShoppingItem(name: name, info: info, quantity: quantity, price: price, shoppingListId: theShoppingList!.id)
             newShoppingItem.image = imageDataString!
-            print("New Shopping Item Created")
             newShoppingItem.saveItemInBackground(shoppingItem: newShoppingItem) { (error) in
                 if error != nil {
                     KRProgressHUD.showError(withMessage: "Save shopping Item error!")
                 }
-                print("New shopping Item saved")
             }
             self.confirmToAddToGroceryList(newShoppingItem: newShoppingItem)
             

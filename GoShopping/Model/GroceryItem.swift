@@ -64,7 +64,6 @@ class GroceryItem {
         ref.setValue(itemDictionary) { (error, ref) in
             completion(error)
         }
-        print("==saveItemInBackground() has end here")
     }
     
     func saveItemInBackground(groceryItem: GroceryItem) {
@@ -80,7 +79,6 @@ class GroceryItem {
                 KRProgressHUD.showSuccess(withMessage: "Handle success")
             }
         }
-        
     }
     
 

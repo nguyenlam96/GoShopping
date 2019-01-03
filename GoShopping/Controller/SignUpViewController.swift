@@ -24,7 +24,9 @@ class SignUpViewController: UIViewController {
         super.viewDidLoad()
         dismissKeyboardWhenTappingAround()
     }
-    
+    deinit {
+        print("\(#file) is deinitialized")
+    }
     // MARK: - IBAction
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
         
@@ -33,22 +35,39 @@ class SignUpViewController: UIViewController {
         let firstName = firstNameTextField.text
         let lastName = lastNameTextField.text
         
-        guard email != "", password != "", firstName != "", lastName != "" else {
-            KRProgressHUD.showError(withMessage: "All fields required!")
-            return
-        }
-        KRProgressHUD.show(withMessage: "Signing up...") {
-            KRProgressHUD.dismiss()
-        }
-        FUser.registerUserWith(email: email!, password: password!, firstName: firstName!, lastName: lastName!) { [unowned self] (error) in
-            if error != nil {
-                KRProgressHUD.showError(withMessage: "Fail to sign up!")
-                return
+//        guard email != "", password != "", firstName != "", lastName != "" else {
+//            KRProgressHUD.showError(withMessage: "All fields required!")
+//            return
+//        }
+//        KRProgressHUD.show(withMessage: "Signing up...") {
+//            KRProgressHUD.dismiss()
+//        }
+        
+        if emailTextField.text == ""  {
+            emailTextField.becomeFirstResponder()
+        } else if passwordTextField.text == "" {
+            passwordTextField.becomeFirstResponder()
+        } else if firstNameTextField.text == "" {
+            firstNameTextField.becomeFirstResponder()
+        } else if lastNameTextField.text == "" {
+            lastNameTextField.becomeFirstResponder()
+        } else {
+            // all fields filled
+            KRProgressHUD.showMessage("Registering...")
+            FUser.registerUserWith(email: email!, password: password!, firstName: firstName!, lastName: lastName!) {
+                [unowned self] (error) in
+                if error != nil {
+                    KRProgressHUD.showError(withMessage: "Fail to sign up!")
+                    return
+                }
+                // sign up success
+                self.view.endEditing(true)
+                self.gotoMainView()
             }
-            // sign up success
-            self.view.endEditing(true)
-            self.gotoMainView()
         }
+        
+        
+        
         
     }
     @IBAction func loginButtonPressed(_ sender: UIButton) {

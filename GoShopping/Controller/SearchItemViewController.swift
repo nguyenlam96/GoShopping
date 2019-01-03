@@ -28,6 +28,7 @@ class SearchItemViewController: UIViewController {
     var theShoppingList: ShoppingList?
     var filteredGroceryItem: [GroceryItem] = []
     var selectFromTapBar = true
+    
     // MARK: - IBOutlet
 
     
@@ -42,7 +43,9 @@ class SearchItemViewController: UIViewController {
         
         loadItems()
     }
-    
+    deinit {
+        print("\(#file) is deinitialized")
+    }
     // MARK: - Setup
     func setup() {
         tableView.delegate = self
@@ -72,7 +75,7 @@ class SearchItemViewController: UIViewController {
     // MARK: - Helper Functions
     func loadItems() {
         
-        firebaseRootRef.child(kGROCERYITEM).child(FUser.getCurrentID()!).observe(.value) { [unowned self](snapshot) in
+        firebaseRootRef.child(kGROCERYITEM).child(FUser.getCurrentID()!).observe(.value) { (snapshot) in
             
             self.groceryItems.removeAll()
             

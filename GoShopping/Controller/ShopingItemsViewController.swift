@@ -15,7 +15,7 @@ class ShopingItemsViewController: UIViewController {
     // MARK: - Properties
     var theShoppingList: ShoppingList?
     var shoppingItems: [ShoppingItem] = []
-    var boughtItems: [ShoppingItem] = []
+    var boughtItems: [ShoppingItem] = [] 
     var defaultOptions = SwipeTableOptions()
     var isSwipeRightEnable = true
     var totalPrice: Float = 0
@@ -32,9 +32,12 @@ class ShopingItemsViewController: UIViewController {
         loadAllItems()
         updateItemsAndTotalpriceLabel()
     }
-    
+    deinit {
+        print("\(#file) is deinitialized")
+    }
     // MARK: - Setup
     func setup() {
+        KRProgressHUD.dismiss()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
@@ -152,11 +155,11 @@ class ShopingItemsViewController: UIViewController {
         
         self.totalPrice = 0
         
-        for item in shoppingItems {
-            self.totalPrice += item.price
+        for item in self.shoppingItems {
+            self.totalPrice += (item.price * Float(item.quantity) )
         }
-        for item in boughtItems {
-            self.totalPrice += item.price
+        for item in self.boughtItems {
+            self.totalPrice += (item.price * Float(item.quantity) )
         }
         
         theShoppingList?.totalPrice = self.totalPrice
@@ -176,7 +179,7 @@ class ShopingItemsViewController: UIViewController {
     func updateItemsAndTotalpriceLabel() {
         let currency = UserDefaults.standard.object(forKey: kCURRENCY) as? String
         itemsLabel.text = "Items left: \(shoppingItems.count)"
-        totalPriceLabel.text = "Total Price: \(currency!) \(String(format: "%.2f", totalPrice))"
+        totalPriceLabel.text = "Total Price: \(currency!) \(String(format: "%.0f", self.totalPrice))"
         tableView.reloadData()
         
     }
@@ -228,9 +231,9 @@ extension ShopingItemsViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var title = ""
         if section == 0 {
-            title = "Shopping Items"
+            title = "Items to buy"
         } else {
-            title = "Bought Items"
+            title = "Bought items"
         }
         return customTableViewSectionHeader(title: title)
     }
@@ -268,11 +271,13 @@ extension ShopingItemsViewController: SwipeTableViewCellDelegate {
             guard isSwipeRightEnable else {
                 return nil
             }
-            let buyAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
+            let buyAction = SwipeAction(style: .default, title: nil) { [unowned self] (action, indexPath) in
                 // update DB
                 item.isBought = !item.isBought
                 item.updateItemInBackground(shoppingItem: item, completion: { (error) in
-                    (error != nil) ? KRProgressHUD.showError(withMessage: "Error update item") : KRProgressHUD.showSuccess(withMessage: "Success buy item")
+                    if (error != nil) {
+                        KRProgressHUD.showError(withMessage: "Error update item")
+                    }
                 })
                 // move item to another section
                 if indexPath.section == 0 {
@@ -288,7 +293,9 @@ extension ShopingItemsViewController: SwipeTableViewCellDelegate {
             let addToCategoryAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
                 let groceryItem = GroceryItem(shoppingItem: item)
                 groceryItem.saveItemInBackground(groceryItem: groceryItem, completion: { (error) in
-                    (error != nil) ? KRProgressHUD.showError() : KRProgressHUD.showSuccess()
+                    if (error != nil) {
+                        KRProgressHUD.showError(withMessage: "Something wrong")
+                    }
                 })
                 tableView.reloadData()
             }
@@ -301,7 +308,7 @@ extension ShopingItemsViewController: SwipeTableViewCellDelegate {
             configure(action: buyAction, with: description)
             return [buyAction, addToCategoryAction]
         } else { // swipe to the left --> delete
-            let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
+            let deleteAction = SwipeAction(style: .destructive, title: nil) { [unowned self](action, indexPath) in
                 // update DB
                 item.deleteItemBackground(shoppingItem: item)
                 // move item to another section

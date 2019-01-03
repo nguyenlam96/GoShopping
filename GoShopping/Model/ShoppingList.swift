@@ -48,7 +48,6 @@ class ShoppingList {
         
         let date = getCustomDateFormatter().string(from: item.date) // get dateString
         
-        
         let dict = [kNAME: item.name,
                     kTOTALPRICE: item.totalPrice,
                     kTOTALITEMS: item.totalItems,

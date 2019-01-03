@@ -28,13 +28,14 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         setup()
     }
-    
+    deinit {
+        print("\(#file) is deinitialized")
+    }
     
     
     // MARK: - Setup
     func setup() {
         signOutButtonOutlet.layer.cornerRadius = 15
-        //setUsername()
         currencyPicker = UIPickerView()
         currencyPicker.delegate = self
         currencyTextField.delegate = self
@@ -56,6 +57,7 @@ class SettingsViewController: UIViewController {
             if success! {
                 cleanFirebaseObserver()
                 let loginView = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginView") as! LoginViewController
+                self.dismiss(animated: true, completion: nil)
                 self.present(loginView, animated: true)
             }
         }
@@ -90,6 +92,7 @@ extension SettingsViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         if pickerView == self.currencyPicker {
             currencyTextField.text = currencyArray[row]
         }
+        // save change to UserDefault
         UserDefaults.standard.setValue(currencyTextField.text!, forKey: kCURRENCY)
         // update UI
     }

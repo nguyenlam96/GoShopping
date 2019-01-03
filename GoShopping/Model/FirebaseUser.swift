@@ -139,7 +139,7 @@ func dictionary(from user: FUser) -> [String:Any] {
                                kEMAIL: user.email,
                                kFIRSTNAME: user.firstName,
                                kLASTNAME: user.lastName
-    ]
+                             ]
     return dict
 }
 
@@ -160,9 +160,9 @@ func fetchUser(userID: String, completion: @escaping (_ success: Bool?) -> Void 
 func resetUserPassword(email: String) {
     Auth.auth().sendPasswordReset(withEmail: email) { (error) in
         if error != nil {
-            KRProgressHUD.showError(withMessage: "Error reseting password")
+            KRProgressHUD.showError(withMessage: "Wrong email!")
         } else {
-            KRProgressHUD.showSuccess(withMessage: "Check your Email")
+            KRProgressHUD.showSuccess(withMessage: "Check your Email to reset password")
         }
     }
 }

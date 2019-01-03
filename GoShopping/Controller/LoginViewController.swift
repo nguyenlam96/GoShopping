@@ -21,7 +21,9 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         setup()
     }
-
+    deinit {
+        print("\(#file) is deinitialized")
+    }
     // MARK: - Setup
     func setup() {
         dismissKeyboardWhenTappingAround()
@@ -30,35 +32,48 @@ class LoginViewController: UIViewController {
     
     // MARK: - IBAction
     @IBAction func signInButtonPressed(_ sender: UIButton) {
-        guard emailTextField.text != "", passwordTextField.text != "" else {
-            KRProgressHUD.showError(withMessage: "Username and password required!")
-            return
-        }
-        KRProgressHUD.show(withMessage: "Signing in...")
+        
+        if emailTextField.text == "" {
+            emailTextField.becomeFirstResponder()
+        } else if passwordTextField.text == "" {
+            passwordTextField.becomeFirstResponder()
+        } else {
+            // all fields filled
+            KRProgressHUD.show(withMessage: "Signing in...")
             
-        FUser.loginUserWith(email: emailTextField.text!, password: passwordTextField.text!) { [unowned self] (error) in
-            if error != nil {
-                KRProgressHUD.showError(withMessage: "Fail to login")
-                return
+            FUser.loginUserWith(email: emailTextField.text!, password: passwordTextField.text!) { [unowned self] (error) in
+                if error != nil {
+                    KRProgressHUD.showError(withMessage: "Fail to login")
+                    return
+                }
+                self.emailTextField.text = nil
+                self.passwordTextField.text = nil
+                self.view.endEditing(true)
+                self.gotoMainView()
+                // call MainView
             }
-            self.emailTextField.text = nil
-            self.passwordTextField.text = nil
-            self.view.endEditing(true)
-            self.gotoMainView()
-            // call MainView
         }
+        
+        
         
     }
     @IBAction func forgotPasswordButtonPressed(_ sender: UIButton) {
-        guard emailTextField.text != "" else {
-            KRProgressHUD.showError(withMessage: "Enter email!")
-            return
+        
+        if emailTextField.text == "" {
+            emailTextField.becomeFirstResponder()
+        } else {
+            KRProgressHUD.showMessage("wait...")
+            resetUserPassword(email: emailTextField.text!)
         }
-        resetUserPassword(email: emailTextField.text!)
+//        guard emailTextField.text != "" else {
+//            KRProgressHUD.showError(withMessage: "Enter email!")
+//            return
+//        }
+        
     }
     
     @IBAction func signupButtonPressed(_ sender: UIButton) {
-        
+        // because the SignUpButton is directly connect to the segue, doesn't need to process showing SignupVC here
     }
     
     // MARK: - Helper Functions
