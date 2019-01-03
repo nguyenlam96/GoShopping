@@ -60,7 +60,8 @@ class ShopingItemsViewController: UIViewController {
                 
             }
         }
-        let selectFromGroceryAction = UIAlertAction(title: "Search From Grocery", style: .default) { (action) in
+        let selectFromGroceryAction = UIAlertAction(title: "Search From Grocery", style: .default) { [unowned self] (action) in
+            
             let searchItemVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchItemVC") as! SearchItemViewController
             
             searchItemVC.delegate = self
@@ -231,9 +232,17 @@ extension ShopingItemsViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var title = ""
         if section == 0 {
-            title = "Items to buy"
+            var totalPriceOfShoppingItems: Float = 0
+            for item in shoppingItems {
+                totalPriceOfShoppingItems += Float(item.quantity) * item.price
+            }
+            title = "Items to buy (\(shoppingItems.count): \(totalPriceOfShoppingItems))"
         } else {
-            title = "Bought items"
+            var totalPriceOfBoughtItems: Float = 0
+            for item in boughtItems {
+                totalPriceOfBoughtItems += Float(item.quantity) * item.price
+            }
+            title = "Bought items (\(boughtItems.count): \(totalPriceOfBoughtItems))"
         }
         return customTableViewSectionHeader(title: title)
     }
@@ -348,6 +357,7 @@ extension ShopingItemsViewController: SwipeTableViewCellDelegate {
 }
 
 extension ShopingItemsViewController: SearchItemViewControllerDelegate {
+
     
     func didChooseItem(groceryItem: GroceryItem) {
         print("Did choose \(groceryItem.name)")

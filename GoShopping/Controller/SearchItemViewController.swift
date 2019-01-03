@@ -53,7 +53,7 @@ class SearchItemViewController: UIViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         
-        dismissKeyboardWhenTappingAround()
+       // dismissKeyboardWhenTappingAround()
         
         cancelButtonOutlet.isHidden = selectFromTapBar
         addButtonOutlet.isHidden = !selectFromTapBar
@@ -79,6 +79,7 @@ class SearchItemViewController: UIViewController {
         addVC.isCreatingNewGroceryItem = true
         self.present(addVC, animated: true)
     }
+    
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -87,7 +88,7 @@ class SearchItemViewController: UIViewController {
     // MARK: - Helper Functions
     func loadItems() {
         
-        firebaseRootRef.child(kGROCERYITEM).child(FUser.getCurrentID()!).observe(.value) { (snapshot) in
+        firebaseRootRef.child(kGROCERYITEM).child(FUser.getCurrentID()!).observe(.value) { [unowned self](snapshot) in
             
             self.groceryItems.removeAll()
             
@@ -158,17 +159,19 @@ extension SearchItemViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 93
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        tableView.deselectRow(at: indexPath, animated: true)
-        
+        print("row \(indexPath.row) is selected")
+    
         let isSearching = searchController.isActive && searchController.searchBar.text != ""
-        
         let theGroceryItem = isSearching ? filteredGroceryItem[indexPath.row] : groceryItems[indexPath.row]
         
-        if !selectFromTapBar {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if  !selectFromTapBar {
             // add to shopping list
-            self.delegate!.didChooseItem(groceryItem: theGroceryItem)
+//            self.delegate!.didChooseItem(groceryItem: theGroceryItem)
+            self.delegate?.didChooseItem(groceryItem: theGroceryItem)
             self.dismiss(animated: true, completion: nil)
         } else {
             // edit grocery item
@@ -176,11 +179,9 @@ extension SearchItemViewController: UITableViewDelegate, UITableViewDataSource {
             addVC.theGroceryItem = theGroceryItem
             present(addVC, animated: true)
         }
-        
-        
-        
-        
+   
     }
+    
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }

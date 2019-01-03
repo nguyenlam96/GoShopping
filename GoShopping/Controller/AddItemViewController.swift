@@ -128,7 +128,7 @@ class AddItemViewController: UIViewController {
             print("Hit No")
             self.dismiss(animated: true, completion: nil)
         }
-        let yesAction = UIAlertAction(title: "Yes", style: .default) { (action) in
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { [unowned self](action) in
             // save to grocery list
             let groceryItem = GroceryItem(shoppingItem: newShoppingItem)
             groceryItem.saveItemInBackground(groceryItem: groceryItem, completion: { (error) in
