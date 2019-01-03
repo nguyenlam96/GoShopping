@@ -112,7 +112,6 @@ class ShopingItemsViewController: UIViewController {
                 self.calTotal()
                 self.updateItemsAndTotalpriceLabel()
             } else {
-                KRProgressHUD.showInfo(withMessage: "No snapshot return")
                 return
             }
             

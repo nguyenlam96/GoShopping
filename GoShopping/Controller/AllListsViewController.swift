@@ -44,7 +44,8 @@ class AllListsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
-        self.title = "Your Lists"
+        self.title = "Lists"
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.orange ]
     }
     
     // MARK: - IBAction
@@ -63,10 +64,10 @@ class AllListsViewController: UIViewController {
             if self.listNameTextField.text != "" {
                 // save
                 self.createShoppingList()
-                KRProgressHUD.showSuccess(withMessage: "\(self.listNameTextField.text!) created !")
+                KRProgressHUD.showSuccess(withMessage: "\(self.listNameTextField.text!) created!")
                 //self.tableView.reloadData()
             } else {
-                KRProgressHUD.showWarning(withMessage: "Name can't be empty!")
+                return
             }
         }
         

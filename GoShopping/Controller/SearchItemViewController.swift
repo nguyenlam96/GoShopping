@@ -107,7 +107,6 @@ class SearchItemViewController: UIViewController {
                 }
                 self.tableView.reloadData()
             } else {
-                KRProgressHUD.showInfo(withMessage: "No snapshot return")
                 return
             }
             
