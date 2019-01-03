@@ -30,7 +30,7 @@ class AddItemViewController: UIViewController {
     // MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        dismissKeyboardWhenTappingAround()
         setup()
         
     }
@@ -58,6 +58,14 @@ class AddItemViewController: UIViewController {
         }
     }
     
+    func dismissKeyboardWhenTappingAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
     
     // MARK: - IBAction
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
@@ -109,6 +117,8 @@ class AddItemViewController: UIViewController {
     
     
     // MARK: - Helper Functions
+    
+    
     
     func confirmToAddToGroceryList(newShoppingItem: ShoppingItem) {
         

@@ -65,11 +65,8 @@ class SignUpViewController: UIViewController {
                 self.gotoMainView()
             }
         }
-        
-        
-        
-        
     }
+    
     @IBAction func loginButtonPressed(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }

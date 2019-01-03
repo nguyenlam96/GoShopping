@@ -48,9 +48,12 @@ class SearchItemViewController: UIViewController {
     }
     // MARK: - Setup
     func setup() {
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        
+        dismissKeyboardWhenTappingAround()
         
         cancelButtonOutlet.isHidden = selectFromTapBar
         addButtonOutlet.isHidden = !selectFromTapBar
@@ -59,6 +62,15 @@ class SearchItemViewController: UIViewController {
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    func dismissKeyboardWhenTappingAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     // MARK: - IBAction

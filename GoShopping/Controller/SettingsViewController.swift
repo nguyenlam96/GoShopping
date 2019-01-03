@@ -40,6 +40,16 @@ class SettingsViewController: UIViewController {
         currencyPicker.delegate = self
         currencyTextField.delegate = self
         currencyTextField.inputView = currencyPicker
+        dismissKeyboardWhenTappingAround()
+    }
+    
+    func dismissKeyboardWhenTappingAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     func setUserInfo() {
@@ -67,6 +77,13 @@ class SettingsViewController: UIViewController {
         self.view.endEditing(true)
     }
      
+    @IBAction func changePasswordButtonPressed(_ sender: UIButton) {
+        let changePasswordVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChangePasswordView") as! ChangePasswordViewController
+        self.present(changePasswordVC, animated: true, completion: nil)
+    }
+    
+    
+    
     // MARK: - Helper Functions
     
 
