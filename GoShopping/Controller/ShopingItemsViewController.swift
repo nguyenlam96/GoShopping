@@ -41,7 +41,7 @@ class ShopingItemsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
-        title = "Shopping Items"
+        title = theShoppingList?.name
     }
     
     // MARK: - IBAction
@@ -303,6 +303,8 @@ extension ShopingItemsViewController: SwipeTableViewCellDelegate {
                 groceryItem.saveItemInBackground(groceryItem: groceryItem, completion: { (error) in
                     if (error != nil) {
                         KRProgressHUD.showError(withMessage: "Something wrong")
+                    } else {
+                        KRProgressHUD.showSuccess(withMessage: "Added to grocery")
                     }
                 })
                 tableView.reloadData()

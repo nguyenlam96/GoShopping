@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="user1@gmail.com" borderStyle="roundedRect" placeholder="email@gmail.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vo2-pv-Wh3">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="lam@gmail.com" borderStyle="roundedRect" placeholder="email@gmail.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vo2-pv-Wh3">
                                 <rect key="frame" x="77" y="66" width="222" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>

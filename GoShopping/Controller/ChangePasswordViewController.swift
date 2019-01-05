@@ -20,7 +20,6 @@ class ChangePasswordViewController: UIViewController {
     @IBOutlet weak var currentPasswordTextField: UITextField!
     @IBOutlet weak var newPasswordTextField: UITextField!
     @IBOutlet weak var verifyPasswordTextField: UITextField!
-    
     @IBOutlet weak var messageLabel: UILabel!
     
     
